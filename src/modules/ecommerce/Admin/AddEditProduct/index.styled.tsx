@@ -28,9 +28,9 @@ export const StyledUserContainer = styled.div`
 `;
 
 export const StyledUserCard = styled(Card)`
-  max-width: 550px;
+  max-width: 700px;
   width: 100%;
-  height:50%;
+  height:90%;
   text-align: center;
   overflow: hidden;
   margin-left:200px;
@@ -452,3 +452,5 @@ export const StyledUserFormImage = styled.img`
   object-fit: cover;
   border-radius: 4px;
 `;
+
+

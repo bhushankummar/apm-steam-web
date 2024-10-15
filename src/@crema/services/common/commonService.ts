@@ -70,15 +70,24 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig, AxiosHeaders } from '
 // Define User type (you can extend this based on the actual user model)
 interface User {
   id: string;
-  name: string;
+  createdAt: string;  // Using string to match the format in your data (timestamp as a string)
+  firstName: string;
+  lastName: string;
   email: string;
-  // Add more fields as per your actual User data
+  role: string;
+  isActive: boolean;
+  ssoPlatform: string | null;
+  uniqueSsoProfileId: string | null;
 }
 
-// Define response types for API calls
 interface ApiResponse<T> {
   data: T;
   message?: string;
+}
+
+interface UsersResponse {
+  users: User[];
+  total: number;
 }
 
 // Set up axios instance with base URL
@@ -119,9 +128,9 @@ const getToken = async (): Promise<string | null> => {
 };
 
 // Function to create a user
-export const createUser = async (userData: User): Promise<ApiResponse<User>> => {
+export const createUser = async (userData: User): Promise<any> => {
   try {
-    const response: AxiosResponse<ApiResponse<User>> = await apiClient.post('/users', userData);
+    const response: AxiosResponse<ApiResponse<User>> = await apiClient.post('/api/users', userData);
     return response.data;
   } catch (error) {
     console.error('Error creating user:', error);
@@ -129,9 +138,9 @@ export const createUser = async (userData: User): Promise<ApiResponse<User>> => 
   }
 };
 
-export const updateUser = async (userId: string, updatedData: Partial<User>): Promise<ApiResponse<User>> => {
+export const updateUser = async (userId: string, updatedData: Partial<User>): Promise<any> => {
   try {
-    const response: AxiosResponse<ApiResponse<User>> = await apiClient.put(`/users/${userId}`, updatedData); 
+    const response: AxiosResponse<ApiResponse<User>> = await apiClient.put(`api/users/${userId}`, updatedData); 
     return response.data;
   } catch (error) {
     console.error('Error updating user:', error);
@@ -141,7 +150,7 @@ export const updateUser = async (userId: string, updatedData: Partial<User>): Pr
 
 export const deleteUser = async (userId: string): Promise<ApiResponse<null>> => {
   try {
-    const response: AxiosResponse<ApiResponse<null>> = await apiClient.delete(`/users/${userId}`);
+    const response: AxiosResponse<ApiResponse<null>> = await apiClient.delete(`api/users/delete/${userId}`);
     return response.data;
   } catch (error: any) {
     console.error('Error deleting user:', error.response || error.message);
@@ -149,7 +158,7 @@ export const deleteUser = async (userId: string): Promise<ApiResponse<null>> => 
   }
 };
 
-export const getAllUsers = async (searchString?: string, currentPage: number = 1, pageSize: number = 10): Promise<ApiResponse<User[]>> => {
+export const getAllUsers = async (searchString?: string, currentPage: number = 1, pageSize: number = 10): Promise<any> => {
   try {
     const payload = {
       searchString,
@@ -157,7 +166,7 @@ export const getAllUsers = async (searchString?: string, currentPage: number = 1
       pageSize,
     };
 
-    const response: AxiosResponse<ApiResponse<User[]>> = await apiClient.post('/users/userList', payload);
+    const response: AxiosResponse<ApiResponse<User[]>> = await apiClient.post('/api/users/find', payload);
     return response.data;
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -179,15 +188,36 @@ export const getUserById = async (id: string): Promise<ApiResponse<User>> => {
 
 export const verifyUser = async (email: string) => {
   try {
-    const response = await axios.get('http://localhost:3000/users/verify-user', { // Replace with your correct API URL
+    const response = await axios.get('http://localhost:3000/api/users/verify-user', { // Replace with your correct API URL
       params: {
         email: email,
       },
     });
 
+    console.log(response,'response00000000');
     return response.data;
   } catch (error) {
     console.error('Error calling verify-user API:', error);
     throw error;
   }
 };
+
+
+export const findOne = async (id: string) => {
+  try {
+    // Make the request using Axios
+    const response = await axios.get(`http://localhost:3000/api/users/details/${id}`);
+    
+    // Check if the response status is OK
+    if (response.status === 200) {
+      return response.data;  // Return the product data
+    } else {
+      console.error(`Error fetching product (status ${response.status}):`, response.data);
+      throw new Error("Failed to fetch product data.");
+    }
+  } catch (error) {
+    console.error("findOne Error:", error);
+    throw error;  // Rethrow the error to be caught in the component
+  }
+};
+

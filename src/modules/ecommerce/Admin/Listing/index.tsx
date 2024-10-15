@@ -7,6 +7,7 @@ import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
 import { getAllUsers } from "@crema/services/common/commonService";
+import { User } from "@auth0/auth0-spa-js";
 
 const { Option } = Select;
 
@@ -28,22 +29,38 @@ const ProductListing = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [filteredData, setFilteredData] = useState<any[]>([]);
 
-  console.log(loading,'loading,');
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const savedData = await getAllUsers();
-        console.log("savedData", savedData);
+        console.log("savedData:", savedData);
+    
+        // Check if savedData and savedData.users are defined
+        if (savedData && savedData.users) {
+          const users = savedData.users;
+    
+          // Ensure that users is an array before using it
+          if (Array.isArray(users)) {
+            setProductList(users); // Set the fetched user data to productList
+            setFilteredData(users); // Initially set the filtered data to display all
+            setTotalCount(savedData.total); // Set the total count for pagination
+          } else {
+            console.error("Expected users data to be an array but got:", users);
+          }
+        } else {
+          console.error("Failed to fetch users: savedData or savedData.users is undefined");
+        }
       } catch (error) {
-        console.error('Failed to fetch users:', error);
+        console.error("Failed to fetch users:", error);
       }
+      setLoading(false);
     };
-
+    
+    
+  
     fetchUsers();
-    setLoading(false);
   }, []);
-
+  
   const applyFilters = (data: any[]) => {
     let newFilteredData = [...data];
 
@@ -228,7 +245,7 @@ const ProductListing = () => {
 
         <Col xs={24} lg={24}>
           <AppCard>
-            <ProductTable filteredData={filteredData}  />
+            <ProductTable filteredData={filteredData} />
             <div
               style={{
                 display: "flex",
