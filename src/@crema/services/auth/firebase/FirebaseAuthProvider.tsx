@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import { AuthUserType } from "@crema/types/models/AuthUser";
+import { auth } from "./firebase";
 
 type FirebaseContextProps = {
   user: AuthUserType | null | undefined;
@@ -54,6 +55,8 @@ interface FirebaseAuthProviderProps {
   fetchError: (data: string) => void;
 }
 
+
+
 const FirebaseAuthProvider: React.FC<FirebaseAuthProviderProps> = ({
   children,
   fetchStart,
@@ -69,14 +72,45 @@ const FirebaseAuthProvider: React.FC<FirebaseAuthProviderProps> = ({
   // Simulate successful user state on mount
   useEffect(() => {
     fetchStart();
-    setFirebaseData({
-      user: { email: "test@example.com" } as AuthUserType, // Mock user
-      isAuthenticated: true,
-      isLoading: false,
-    });
-    fetchSuccess();
-  }, []);
-
+  
+    const getAuthUser = auth.onAuthStateChanged(
+      (user) => {
+        // Check if authToken exists and is valid
+        const authToken = user?.getIdToken(); // Assuming this method retrieves the token
+        console.log("Authenticated User:", user, "Auth Token:", authToken);
+  
+        if (authToken) {
+          setFirebaseData({
+            user: user as AuthUserType,
+            isAuthenticated: true,  // User is valid if authToken exists
+            isLoading: false,
+          });
+        } else {
+          setFirebaseData({
+            user: null,
+            isAuthenticated: false,  // No token means not authenticated
+            isLoading: false,
+          });
+        }
+  
+        fetchSuccess();
+      },
+      () => {
+        // On error, handle the state update
+        fetchSuccess();
+        setFirebaseData({
+          user: null,
+          isAuthenticated: false,  // Explicitly set as not authenticated
+          isLoading: false,
+        });
+      }
+    );
+  
+    return () => {
+      getAuthUser(); // Unsubscribe from auth listener
+    };
+  }, []);  // No need to depend on firebaseData.user
+  
   // Simulate login with email and password
   const logInWithEmailAndPassword = async ({ email }: SignInProps) => {
     fetchStart();
