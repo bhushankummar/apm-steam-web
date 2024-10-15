@@ -16,11 +16,11 @@ type FormData = {
   createdAt: string;
 };
 
-const getColumns = (navigate: NavigateFunction): ColumnsType<FormData> => [
+const getColumns = (): ColumnsType<FormData> => [
   {
     title: "Full Name",
     key: "fullName",
-    render: (record:any) => (
+    render: (record: any) => (
       <span>{`${record.firstName} ${record.lastName}`}</span>
     ),
   },
@@ -28,7 +28,7 @@ const getColumns = (navigate: NavigateFunction): ColumnsType<FormData> => [
     title: "Email",
     dataIndex: "email",
     key: "email",
-    render: (email:string) => (
+    render: (email: string) => (
       <Typography.Link style={{ display: "flex", alignItems: "center" }}>
         {ellipsisLines(email)}
       </Typography.Link>
@@ -65,7 +65,7 @@ const ProductArchivedPage = () => {
   useEffect(() => {
     // Fetch archived product data from local storage
     const storedData = localStorage.getItem("deletedAgents"); // Ensure this is the correct key
-    console.log("Fetching Archived Technician data...",storedData); // Console log for debugging
+    console.log("Fetching Archived Technician data...", storedData); // Console log for debugging
 
     if (storedData) {
       try {
@@ -87,13 +87,13 @@ const ProductArchivedPage = () => {
 
   return (
     <>
-    <h2 style={{textAlign:'center',marginBottom:'30px'}}> Archieved Products</h2>
-    <StyledOrderTable
-      hoverColor
-      data={archivedProducts}
-      columns={getColumns(navigate)}
-      scroll={{ x: "auto" }}
-    />
+      <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Archived Products</h2>
+      <StyledOrderTable
+        hoverColor
+        data={archivedProducts}
+        columns={getColumns()} // No need to pass `navigate` here
+        scroll={{ x: "auto" }}
+      />
     </>
   );
 };

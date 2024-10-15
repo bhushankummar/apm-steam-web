@@ -6,9 +6,18 @@ import { Form, Input, Button, Radio } from "antd";
 import { notification } from "antd";
 import { StyledUserCard, StyledUserCardHeader, StyledUserCardLogo, StyledUserContainer, StyledUserPages } from "../AddEditProduct/index.styled";
 
+// Define Product type to specify the shape of the product object
+interface Product {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  status: string;
+}
+
 const ProductEditPage = () => {
   const { id } = useParams();
-  const [currentProduct, setCurrentProduct] = useState(null);
+  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);  // Type currentProduct as Product | null
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -16,8 +25,8 @@ const ProductEditPage = () => {
     const storedData = localStorage.getItem("AgentData");
     if (storedData) {
       try {
-        const products = JSON.parse(storedData);
-        const product = products.find((p) => p.id === id);
+        const products: Product[] = JSON.parse(storedData);  // Define products as Product[]
+        const product = products.find((p: Product) => p.id === id);  // Type p as Product
         if (product) {
           setCurrentProduct(product);
         } else {
@@ -37,13 +46,13 @@ const ProductEditPage = () => {
     setLoading(false);
   }, [id]);
 
-  const handleSave = (values) => {
+  const handleSave = (values: Product) => {  // Type values as Product
     const storedData = localStorage.getItem("AgentData");
     if (storedData) {
       try {
-        const products = JSON.parse(storedData);
-        const updatedProducts = products.map((product) =>
-          product.id === currentProduct.id ? { ...currentProduct, ...values } : product
+        const products: Product[] = JSON.parse(storedData);  // Define products as Product[]
+        const updatedProducts = products.map((product: Product) =>
+          product.id === currentProduct?.id ? { ...currentProduct, ...values } : product
         );
         localStorage.setItem("AgentData", JSON.stringify(updatedProducts));
         notification.success({

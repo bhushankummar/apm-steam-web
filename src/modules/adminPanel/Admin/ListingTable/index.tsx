@@ -3,7 +3,7 @@ import { Typography } from "antd";
 import { StyledListingStatus } from "../index.styled";
 import { StyledOrderTable } from "../../Orders/index.styled";
 import { ellipsisLines } from "@crema/helpers/StringHelper";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
@@ -16,13 +16,11 @@ type FormData = {
   status: "Active" | "InActive"; // Assuming this property exists
 };
 
-const getColumns = (navigate: NavigateFunction): ColumnsType<FormData> => [
+const getColumns = (): ColumnsType<FormData> => [
   {
     title: "Full Name",
     key: "fullName",
-    render: (text, record) => (
-      <span>{`${record.firstName} ${record.lastName}`}</span>
-    ),
+    render: (record) => <span>{`${record.firstName} ${record.lastName}`}</span>,
   },
   {
     title: "Email",
@@ -53,16 +51,20 @@ const getColumns = (navigate: NavigateFunction): ColumnsType<FormData> => [
       >
         {status === "Active" ? (
           <>
-            <span style={{ marginRight: 5, color: "#43C888", fontWeight: "bold" }}>
-              <CheckCircleOutlined />
-            </span>
+            <CheckCircleOutlined
+              style={{ marginRight: 5, color: "#43C888", fontWeight: "bold" }}
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
+            />
             <span style={{ color: "#43C888", fontWeight: "bold" }}>Active</span>
           </>
         ) : (
           <>
-            <span style={{ marginRight: 5 }}>
-              <CloseCircleOutlined />
-            </span>
+            <CloseCircleOutlined
+              style={{ marginRight: 5 }}
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
+            />
             InActive
           </>
         )}
@@ -86,7 +88,7 @@ const ProductTable = ({ filteredData }: { filteredData: FormData[] }) => {
     <StyledOrderTable
       hoverColor
       data={filteredData}
-      columns={getColumns(navigate)}
+      columns={getColumns()}
       scroll={{ x: "auto" }}
     />
   );

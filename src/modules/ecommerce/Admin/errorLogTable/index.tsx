@@ -18,10 +18,11 @@ type FormData = {
 const ErrorLogInformation = () => {
   const navigate = useNavigate();
   const [filterData, setFilterData] = useState({
-    property: null as string | null,
+    property: null as keyof FormData | null, 
     operator: null as string | null,
     filterValue: "",
   });
+  
   const [filteredData, setFilteredData] = useState<FormData[]>([]);
   const [isFiltered, setIsFiltered] = useState(false);
 
