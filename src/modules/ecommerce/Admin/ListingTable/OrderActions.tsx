@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Dropdown, notification, Modal } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+import { deleteUser } from "@crema/services/common/commonService";
 
 type Props = {
   id: number;
@@ -34,40 +35,23 @@ const OrderActions = ({ id }: Props) => {
     }
   };
 
-  const handleDelete = (id: number) => {
-    const storedData = localStorage.getItem("AgentData");
-    if (storedData) {
-      try {
-        const products = JSON.parse(storedData);
-        const productToDelete = products.find((p: any) => p.id === id);
-        const updatedProducts = products.filter((p: any) => p.id !== id);
-
-        if (productToDelete) {
-          // Store the deleted product in a separate array in local storage
-          const deletedAgents = JSON.parse(localStorage.getItem("deletedAgents") || "[]");
-          deletedAgents.push(productToDelete);
-          localStorage.setItem("deletedAgents", JSON.stringify(deletedAgents));
-
-          // Update the original products in local storage
-          localStorage.setItem("AgentData", JSON.stringify(updatedProducts));
-          
-          notification.success({
-            message: "Success",
-            description: "Technician deleted successfully.",
-          });
-        } else {
-          notification.error({
-            message: "Error",
-            description: "Technician not found.",
-          });
-        }
-      } catch (error) {
-        console.error("Error parsing stored data:", error);
-        notification.error({
-          message: "Error",
-          description: "Failed to delete Technician data.",
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await deleteUser(id.toString());  
+      if (response.data) {
+        notification.success({
+          message: "Success",
+          description: "Technician deleted successfully.",
         });
+  
       }
+    } catch (error) {
+      console.error("Error deleting technician:", error);
+  
+      notification.error({
+        message: "Error",
+        description: error.response?.data?.message || "Failed to delete technician.",
+      });
     }
   };
 

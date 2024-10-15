@@ -15,6 +15,7 @@ import {
 } from "./index.styled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createUser, getAllUsers } from '../../../../@crema/services/common/commonService'; // Import the API service
 
 type FormData = {
   id: string;
@@ -38,18 +39,16 @@ const Signup = () => {
   });
 
   useEffect(() => {
-    const savedData = localStorage.getItem("AgentData");
-    if (savedData) {
+    const fetchUsers = async () => {
       try {
-        const formDataArray = JSON.parse(savedData) as FormData[];
-        if (Array.isArray(formDataArray) && formDataArray.length > 0) {
-          setForm(formDataArray[formDataArray.length - 1]); // Load the latest record
-        }
-        console.log("Loaded data from local storage:", formDataArray);
+        const savedData = await getAllUsers();
+        console.log("savedData", savedData);
       } catch (error) {
-        console.error("Error parsing saved data:", error);
+        console.error('Failed to fetch users:', error);
       }
-    }
+    };
+
+    fetchUsers();
   }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
