@@ -141,7 +141,7 @@ export const updateUser = async (userId: string, updatedData: Partial<User>): Pr
 
 export const deleteUser = async (userId: string): Promise<ApiResponse<null>> => {
   try {
-    const response: AxiosResponse<ApiResponse<null>> = await apiClient.delete(`/users/${userId}`);
+    const response: AxiosResponse<ApiResponse<null>> = await apiClient.delete(`/users/delete/${userId}`);
     return response.data;
   } catch (error: any) {
     console.error('Error deleting user:', error.response || error.message);
@@ -157,7 +157,7 @@ export const getAllUsers = async (searchString?: string, currentPage: number = 1
       pageSize,
     };
 
-    const response: AxiosResponse<ApiResponse<User[]>> = await apiClient.post('/users/userList', payload);
+    const response: AxiosResponse<ApiResponse<User[]>> = await apiClient.post('/users/find', payload);
     return response.data;
   } catch (error) {
     console.error('Error fetching users:', error);

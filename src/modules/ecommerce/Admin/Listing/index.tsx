@@ -6,7 +6,7 @@ import { Col, Button, Select, Input } from "antd";
 import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
-import { getAllUsers } from "@crema/services/common/commonService";
+import axios from "@crema/services/axios";
 
 const { Option } = Select;
 
@@ -28,81 +28,47 @@ const ProductListing = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [filteredData, setFilteredData] = useState<any[]>([]);
 
-  console.log(loading,'loading,');
-
   useEffect(() => {
     const fetchUsers = async () => {
+      setLoading(true);
       try {
-        const savedData = await getAllUsers();
-        console.log("savedData", savedData);
+        console.log('Fetching filtered data from backend...');
+
+        let payload: any = {
+          currentPage: page + 1,  
+          pageSize: pageSize,    
+        };
+
+        if (filterData.property && filterData.operator && filterData.filterValue) {
+          payload = {
+            ...payload,
+            filter: {
+              columnName: filterData.property, 
+              value: filterData.filterValue,    
+              operator: filterData.operator,    
+            }
+          };
+        }
+  
+        const response = await axios.post('http://localhost:3000/users/find', payload);
+  
+        setProductList(response.data.users);
+        setFilteredData(response.data.users);
+        setTotalCount(response.data.total); 
+  
       } catch (error) {
         console.error('Failed to fetch users:', error);
+      } finally {
+        setLoading(false);
       }
     };
-
-    fetchUsers();
-    setLoading(false);
-  }, []);
-
-  const applyFilters = (data: any[]) => {
-    let newFilteredData = [...data];
-
-    const matchesStatus = filterData.status
-      ? (item: any) => item.status === filterData.status
-      : () => true;
-
-    const matchesProperty = (item: any) => {
-      if (
-        filterData.property &&
-        filterData.operator &&
-        filterData.filterValue
-      ) {
-        const value = item[filterData.property];
-        const filterValue = filterData.filterValue.toLowerCase();
-        const itemValue = value ? value.toString().toLowerCase() : "";
-
-        switch (filterData.operator) {
-          case "equal":
-            return itemValue === filterValue;
-          case "greater":
-            if (filterData.property === "createdAt") {
-              return (
-                new Date(value).getTime() >
-                new Date(filterData.filterValue).getTime()
-              );
-            }
-            return itemValue > filterValue;
-          case "less":
-            if (filterData.property === "createdAt") {
-              return (
-                new Date(value).getTime() <
-                new Date(filterData.filterValue).getTime()
-              );
-            }
-            return itemValue < filterValue;
-          default:
-            return true;
-        }
-      }
-      return true;
-    };
-
-    newFilteredData = newFilteredData.filter(
-      (item) => matchesStatus(item) && matchesProperty(item)
-    );
-
-    // Paginate the filtered data
-    const startIndex = page * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedData = newFilteredData.slice(startIndex, endIndex);
-
-    setFilteredData(paginatedData);
-    setTotalCount(newFilteredData.length); // Update total count for pagination
-  };
+  
+    fetchUsers(); 
+  }, [filterData, page, pageSize]);
+  
 
   const handleApplyFilter = () => {
-    applyFilters(productList); // Apply filters to the stored product list
-    setPage(0); // Reset to first page
+    setPage(0); 
   };
 
   const handleCancelFilter = () => {
@@ -112,14 +78,11 @@ const ProductListing = () => {
       operator: null,
       filterValue: "",
     });
-    setFilteredData(productList);
-    setTotalCount(productList.length); // Reset total count
     setPage(0); // Reset to first page
   };
 
   const onChangePage = (newPage: number) => {
     setPage(newPage);
-    applyFilters(productList); // Reapply filters on page change
   };
 
   // Mapping for properties
@@ -171,9 +134,9 @@ const ProductListing = () => {
                     setFilterData({ ...filterData, operator: value })
                   }
                 >
-                  <Option value="equal">Equal</Option>
-                  <Option value="greater">Greater Than</Option>
-                  <Option value="less">Less Than</Option>
+                  <Option value="equals">Equal</Option>
+                  <Option value="greaterThan">Greater Than</Option>
+                  <Option value="lessThan">Less Than</Option>
                 </Select>
                 <Input
                   placeholder="Value"
