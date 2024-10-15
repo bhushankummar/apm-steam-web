@@ -2,7 +2,7 @@ import React, {CSSProperties, ReactNode, useState} from 'react';
 import AppInfoView from '../AppInfoView';
 import AppSidebar from './AppSidebar';
 import clsx from 'clsx';
-import {MenuOutlined} from '@ant-design/icons';
+// import {MenuOutlined} from '@ant-design/icons';
 import QueueAnim, {IQueueTypeOrArrayOrFunc} from 'rc-queue-anim';
 import {useLayoutContext} from '@crema/context/AppContextProvider/LayoutContextProvider';
 import {
@@ -44,7 +44,7 @@ const AppsContainer: React.FC<AppsContainerProps> = ({
       >
         {fullView ? null : (
           <StyledMenuBtn onClick={() => setAppDrawerOpen(!isAppDrawerOpen)}>
-            <MenuOutlined className='menu-btn-icon' />
+            {/* <MenuOutlined className='menu-btn-icon' /> */}
           </StyledMenuBtn>
         )}
         <QueueAnim style={{zIndex: 3, overflow: 'hidden'}} type='scale'>

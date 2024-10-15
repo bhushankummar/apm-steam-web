@@ -11,7 +11,12 @@ const OrderActions = () => {
   return (
     <Dropdown menu={{ items }} trigger={["click"]}>
       <Button shape="circle">
-        <MoreOutlined />
+        {/* Pass onClick or onPointer events */}
+        <MoreOutlined
+          onClick={() => console.log('More options clicked')}
+          onPointerEnterCapture={() => console.log('Pointer entered')}
+          onPointerLeaveCapture={() => console.log('Pointer left')}
+        />
       </Button>
     </Dropdown>
   );

@@ -1,7 +1,7 @@
 import { Button, Col, Select, Typography, Input } from "antd";
 import { StyledOrderTable } from "../../Orders/index.styled";
 import { ellipsisLines } from "@crema/helpers/StringHelper";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { StyledTitle5 } from "../index.styled";
 import AppRowContainer from "@crema/components/AppRowContainer";

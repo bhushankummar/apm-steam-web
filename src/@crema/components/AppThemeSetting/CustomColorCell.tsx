@@ -1,5 +1,5 @@
 import React from 'react';
-import {CheckOutlined} from '@ant-design/icons';
+// import {CheckOutlined} from '@ant-design/icons';
 import {
   StyledColorOptionListItem,
   StyledCustomColorOption,
@@ -26,7 +26,7 @@ const CustomColorCell: React.FC<ColorCellProps> = ({
       <StyledCustomColorOption style={{backgroundColor: themeColorSet.color}}>
         {themeColorSet.color === sidebarBGColor ? (
           <StyledCustomColorOptionRightIcon>
-            <CheckOutlined />
+            {/* <CheckOutlined /> */}
           </StyledCustomColorOptionRightIcon>
         ) : null}
       </StyledCustomColorOption>

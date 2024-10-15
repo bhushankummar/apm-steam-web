@@ -149,15 +149,22 @@ export const deleteUser = async (userId: string): Promise<ApiResponse<null>> => 
   }
 };
 
-export const getAllUsers = async (): Promise<ApiResponse<User[]>> => {
+export const getAllUsers = async (searchString?: string, currentPage: number = 1, pageSize: number = 10): Promise<ApiResponse<User[]>> => {
   try {
-    const response: AxiosResponse<ApiResponse<User[]>> = await apiClient.get('/users');
+    const payload = {
+      searchString,
+      currentPage,
+      pageSize,
+    };
+
+    const response: AxiosResponse<ApiResponse<User[]>> = await apiClient.post('/users/userList', payload);
     return response.data;
   } catch (error) {
     console.error('Error fetching users:', error);
     throw error;
   }
 };
+
 
 export const getUserById = async (id: string): Promise<ApiResponse<User>> => {
   try {

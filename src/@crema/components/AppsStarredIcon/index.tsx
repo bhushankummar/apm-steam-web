@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {StarFilled, StarOutlined} from '@ant-design/icons';
+// import {StarFilled, StarOutlined} from '@ant-design/icons';
 import AppIconButton from '../AppIconButton';
 import {StyledStarIcon} from './index.styled';
 
@@ -18,7 +18,7 @@ const AppsStarredIcon: React.FC<AppsStarredIconProps> = ({
     <AppIconButton
       icon={
         <StyledStarIcon>
-          {item.isStarred ? <StarFilled /> : <StarOutlined />}
+          {/* {item.isStarred ? <StarFilled /> : <StarOutlined />} */}
         </StyledStarIcon>
       }
       title={title}

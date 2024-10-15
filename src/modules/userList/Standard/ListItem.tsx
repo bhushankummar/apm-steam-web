@@ -1,14 +1,6 @@
 import { Avatar } from "antd";
 import IntlMessages from "@crema/helpers/IntlMessages";
-import { FaFacebookF } from "react-icons/fa";
-import {
-  GlobalOutlined,
-  InstagramOutlined,
-  LinkedinOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  TwitterOutlined,
-} from "@ant-design/icons";
+
 import {
   StyledFooterAction,
   StyledUserFooterHireBtn,
@@ -17,13 +9,8 @@ import {
   StyledUserStandardCardAvatar,
   StyledUserStandardCardHeader,
   StyledUserStandardChip,
-  StyledUserStandardContactItem,
   StyledUserStandardContent,
-  StyledUserStandardContentHeader,
-  StyledUserStandardContentHeaderContact,
   StyledUserStandardFooter,
-  StyledUserStandardHeaderSocial,
-  StyledUserStandardHeaderSocialItem,
   StyledUserStandardInner,
   StyledUserStandardPara,
 } from "./index.styled";
@@ -42,7 +29,7 @@ const ListItem = ({ user }: { user: UserList }) => {
         </StyledUserStandardCardHeader>
 
         <StyledUserStandardContent>
-          <StyledUserStandardContentHeader>
+          {/* <StyledUserStandardContentHeader>
             <StyledUserStandardContentHeaderContact>
               <StyledUserStandardContactItem>
                 <MailOutlined />
@@ -74,7 +61,7 @@ const ListItem = ({ user }: { user: UserList }) => {
                 <TwitterOutlined className="pointer" />
               </StyledUserStandardHeaderSocialItem>
             </StyledUserStandardHeaderSocial>
-          </StyledUserStandardContentHeader>
+          </StyledUserStandardContentHeader> */}
 
           <StyledUserStandardPara>{user.information}</StyledUserStandardPara>
 

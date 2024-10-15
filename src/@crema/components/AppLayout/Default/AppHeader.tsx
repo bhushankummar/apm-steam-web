@@ -1,5 +1,4 @@
 import React from 'react';
-import AppLogo from '../components/AppLogo';
 import {useIntl} from 'react-intl';
 import AppLanguageSwitcher from '../../AppLanguageSwitcher';
 import AppHeaderMessages from '../../AppHeaderMessages';

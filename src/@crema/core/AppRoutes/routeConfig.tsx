@@ -1,5 +1,4 @@
 import { FaTools } from "react-icons/fa";
-import { RiShieldUserLine } from "react-icons/ri";
 
 const routesConfig = [
   {

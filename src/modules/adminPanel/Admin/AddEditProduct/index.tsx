@@ -15,7 +15,6 @@ import {
 } from "./index.styled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser } from '../../../../@crema/services/common/commonService'; // Import the API service
 
 type FormData = {
   id: string;
@@ -29,7 +28,7 @@ type FormData = {
 const Signup = () => {
   const { messages } = useIntl();
   const navigate = useNavigate();
-  const [form, setForm] = useState<FormData>({
+  const [ setForm] = useState<any>({
     id: uuidv4(),
     firstName: "",
     lastName: "",
@@ -55,23 +54,24 @@ const Signup = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setForm((prev) => ({
+    setForm((prev: any) => ({
       ...prev,
       [name]: value,
     }));
+    
   };
 
 const onFinish = async () => {
   // Prepare the new data to be sent to the server
-  const newData = {
-    ...form,
-    id: uuidv4(), // Assuming the server will handle ID generation
-    createdAt: new Date().toISOString().split('T')[0],
-  };
+  // const newData = {
+  //   ...form,
+  //   id: uuidv4(), // Assuming the server will handle ID generation
+  //   createdAt: new Date().toISOString().split('T')[0],
+  // };
 
   try {
     // Call the createUser function to send the new data to the API
-    await createUser(newData);
+    // await createUser(newData);
 
     // Show success notification
     notification.success({

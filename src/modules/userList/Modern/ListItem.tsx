@@ -1,7 +1,7 @@
 import React from 'react';
 import {Tooltip} from 'antd';
 import IntlMessages from '@crema/helpers/IntlMessages';
-import {BookOutlined, MoreOutlined, ShareAltOutlined} from '@ant-design/icons';
+// import {BookOutlined, MoreOutlined, ShareAltOutlined} from '@ant-design/icons';
 import {
   StyledUserFooterAction,
   StyledUserFooterHireBtn,
@@ -43,7 +43,7 @@ const ListItem: React.FC<ListItemProps> = ({user}) => {
                   className='pointer'
                   title={<IntlMessages id='common.share' />}
                 >
-                  <ShareAltOutlined />
+                  {/* <ShareAltOutlined /> */}
                 </Tooltip>
               </StyledUserModernHeaderActionItem>
 
@@ -52,7 +52,7 @@ const ListItem: React.FC<ListItemProps> = ({user}) => {
                   className='pointer'
                   title={<IntlMessages id='common.bookmark' />}
                 >
-                  <BookOutlined />
+                  {/* <BookOutlined /> */}
                 </Tooltip>
               </StyledUserModernHeaderActionItem>
 
@@ -61,7 +61,7 @@ const ListItem: React.FC<ListItemProps> = ({user}) => {
                   className='pointer'
                   title={<IntlMessages id='common.more' />}
                 >
-                  <MoreOutlined />
+                  {/* <MoreOutlined /> */}
                 </Tooltip>
               </StyledUserModernHeaderActionItem>
             </StyledUserModernHeaderAction>

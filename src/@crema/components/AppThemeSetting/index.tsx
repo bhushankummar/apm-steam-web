@@ -6,7 +6,7 @@ import {
 } from "@crema/mockapi/fakedb/navigationStyle";
 import clsx from "clsx";
 import IntlMessages from "@crema/helpers/IntlMessages";
-import { CheckOutlined } from "@ant-design/icons";
+// import { CheckOutlined } from "@ant-design/icons";
 import { LayoutDirection, LayoutType } from "@crema/constants/AppEnums";
 import AppScrollbar from "../AppScrollbar";
 import { FiSettings } from "react-icons/fi";
@@ -120,7 +120,7 @@ const AppThemeSetting = () => {
                         <img src={navLayout.image} alt="nav" />
                         {navStyle === navLayout.alias ? (
                           <StyledCustomizeNavOptionRightIcon>
-                            <CheckOutlined />
+                            {/* <CheckOutlined /> */}
                           </StyledCustomizeNavOptionRightIcon>
                         ) : null}
                       </StyledCustomizeNavOptionContent>
@@ -148,7 +148,7 @@ const AppThemeSetting = () => {
                         />
                         {layoutType === layout.alias ? (
                           <StyledCustomizeNavOptionRightIcon>
-                            <CheckOutlined />
+                            {/* <CheckOutlined /> */}
                           </StyledCustomizeNavOptionRightIcon>
                         ) : null}
                       </StyledCustomizeNavOptionContent>

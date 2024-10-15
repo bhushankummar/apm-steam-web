@@ -5,7 +5,7 @@ import AppRowContainer from "@crema/components/AppRowContainer";
 import { Button, Checkbox, Col, Form, Input } from "antd";
 import { FaFacebookF } from "react-icons/fa";
 
-import { GithubOutlined, TwitterOutlined } from "@ant-design/icons";
+// import { GithubOutlined, TwitterOutlined } from "@ant-design/icons";
 import AppPageMeta from "@crema/components/AppPageMeta";
 import Logo from "../../../assets/user/login.svg";
 import {
@@ -113,10 +113,10 @@ const StyledSignin = () => {
                       <FaFacebookF />
                     </Button>
                     <Button>
-                      <GithubOutlined />
+                      {/* <GithubOutlined /> */}
                     </Button>
                     <Button>
-                      <TwitterOutlined />
+                      {/* <TwitterOutlined /> */}
                     </Button>
                   </StyledUserSocialLink>
                 </StyledUserCardFooterAction>

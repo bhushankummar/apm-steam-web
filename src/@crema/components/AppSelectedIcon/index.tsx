@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import {CheckOutlined} from '@ant-design/icons';
+// import {CheckOutlined} from '@ant-design/icons';
 import {StyledAppSelectedIcon} from './index.styled';
 
 type AppSelectedIconProps = {
@@ -20,7 +20,7 @@ const AppSelectedIcon: React.FC<AppSelectedIconProps> = ({
       backgroundColor={backgroundColor}
       color={color}
     >
-      <CheckOutlined />
+      {/* <CheckOutlined /> */}
     </StyledAppSelectedIcon>
   );
 };

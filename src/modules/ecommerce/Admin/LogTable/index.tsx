@@ -1,7 +1,7 @@
 import { Button, Col, Select, Typography, Input } from "antd";
 import { StyledOrderTable } from "../../Orders/index.styled";
 import { ellipsisLines } from "@crema/helpers/StringHelper";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { StyledTitle5 } from "../index.styled";
 import AppRowContainer from "@crema/components/AppRowContainer";
@@ -92,24 +92,27 @@ const LogInformation = () => {
         filterData.operator &&
         filterData.filterValue
       ) {
-        const value = item[filterData.property];
-        const filterValue = filterData.filterValue.toLowerCase();
-        const itemValue = value ? value.toString().toLowerCase() : "";
-
-        switch (filterData.operator) {
-          case "equal":
-            return itemValue === filterValue;
-          case "greater":
-            return itemValue > filterValue;
-          case "less":
-            return itemValue < filterValue;
-          default:
-            return true;
+        // Type guard to ensure filterData.property is a key of FormData
+        if (filterData.property in item) {
+          const value = item[filterData.property as keyof FormData];
+          const filterValue = filterData.filterValue.toLowerCase();
+          const itemValue = value ? value.toString().toLowerCase() : "";
+    
+          switch (filterData.operator) {
+            case "equal":
+              return itemValue === filterValue;
+            case "greater":
+              return itemValue > filterValue;
+            case "less":
+              return itemValue < filterValue;
+            default:
+              return true;
+          }
         }
       }
       return true;
     };
-
+    
     newFilteredData = newFilteredData.filter(matchesProperty);
     setFilteredData(newFilteredData);
     setIsFiltered(true);

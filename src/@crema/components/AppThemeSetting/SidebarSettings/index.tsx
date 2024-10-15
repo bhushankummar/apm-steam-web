@@ -4,7 +4,7 @@ import {
 } from "@crema/context/AppContextProvider/SidebarContextProvider";
 import NavMenuStyle from "./NavMenuStyle";
 import IntlMessages from "@crema/helpers/IntlMessages";
-import { CheckOutlined } from "@ant-design/icons";
+// import { CheckOutlined } from "@ant-design/icons";
 import { StyledSidebarSettings } from "./index.styled";
 import {
   StyledCustomizedItem,
@@ -54,7 +54,7 @@ const SidebarSettings = () => {
                     <img src={imagesObj.image} alt='nav' />
                     {sidebarBgImageId === imagesObj.id ? (
                       <StyledCustomizeNavOptionRightIcon>
-                        <CheckOutlined />
+                        {/* <CheckOutlined /> */}
                       </StyledCustomizeNavOptionRightIcon>
                     ) : null}
                   </StyledCustomizeNavOptionContent>

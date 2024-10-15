@@ -1,6 +1,6 @@
 import React from 'react';
-import {CheckOutlined, PlusOutlined} from '@ant-design/icons';
-import IntlMessages from '@crema/helpers/IntlMessages';
+// import {CheckOutlined, PlusOutlined} from '@ant-design/icons';
+// import IntlMessages from '@crema/helpers/IntlMessages';
 import {useThemeContext} from '@crema/context/AppContextProvider/ThemeContextProvider';
 import {
   StyledColorBody,
@@ -37,9 +37,9 @@ const CustomColorCell: React.FC<ColorCellProps> = ({
           theme.palette.secondary.main === themeColorSet.secondary.main &&
           theme.palette.mode === themeColorSet.mode ? (
             <StyledColorCheckboxWrapper>
-              <CheckOutlined>
+              {/* <CheckOutlined>
                 <IntlMessages id='customizer.checked' />
-              </CheckOutlined>
+              </CheckOutlined> */}
             </StyledColorCheckboxWrapper>
           ) : null}
         </StyledColorHeadingWrapper>
@@ -59,7 +59,7 @@ const CustomColorCell: React.FC<ColorCellProps> = ({
             <StyledColorBodyColor
               style={{backgroundColor: themeColorSet.secondary.main}}
             >
-              <PlusOutlined />
+              {/* <PlusOutlined /> */}
             </StyledColorBodyColor>
           </StyledColorBody>
           Background
