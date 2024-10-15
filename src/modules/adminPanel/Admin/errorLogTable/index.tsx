@@ -69,15 +69,11 @@ const ErrorLogInformation = () => {
     let newFilteredData = [...logData];
 
     const matchesProperty = (item: FormData) => {
-      if (
-        filterData.property &&
-        filterData.operator &&
-        filterData.filterValue
-      ) {
-        const value = item[filterData.property];
+      if (filterData.property && filterData.operator && filterData.filterValue) {
+        const value = item[filterData.property as keyof FormData]; // Cast the property to keyof FormData
         const filterValue = filterData.filterValue.toLowerCase();
         const itemValue = value ? value.toString().toLowerCase() : "";
-
+    
         switch (filterData.operator) {
           case "equal":
             return itemValue === filterValue;
@@ -91,6 +87,7 @@ const ErrorLogInformation = () => {
       }
       return true;
     };
+    
 
     newFilteredData = newFilteredData.filter(matchesProperty);
     setFilteredData(newFilteredData);

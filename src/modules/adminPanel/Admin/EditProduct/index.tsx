@@ -87,7 +87,8 @@ const ProductEditPage = () => {
         message: "Success",
         description: "Technician updated successfully.",
       });
-      setCurrentProduct(updatedProduct);
+      // Provide type changes have to done
+      setCurrentProduct(updatedProduct as any);
       navigate("/apps/admin/technician-listing");
     } catch (error) {
       console.error("Error updating product:", error);
