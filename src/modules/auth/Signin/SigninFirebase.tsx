@@ -1,130 +1,57 @@
 import { useNavigate } from "react-router-dom";
-import { Checkbox, Form, Input } from "antd";
+import { Button } from "antd";
+import { useMsal } from "@azure/msal-react"; // Import MSAL React
+import { loginRequest } from "./authConfig"; // Import login request configuration
 import {
-  GithubOutlined,
-  GoogleOutlined,
-  TwitterOutlined,
-} from "@ant-design/icons";
-import { FaFacebookF } from "react-icons/fa";
-import { useIntl } from "react-intl";
-import IntlMessages from "@crema/helpers/IntlMessages";
-import { useAuthMethod } from "@crema/hooks/AuthHooks";
-import {
-  SignInButton,
-  StyledRememberMe,
   StyledSign,
   StyledSignContent,
-  StyledSignedText,
-  StyledSignFooter,
   StyledSignForm,
-  StyledSignIconBtn,
-  StyledSignLink,
-  StyledSignLinkTag,
-  StyledSignSocialLink,
-  StyledSignTextGrey,
+  StyledSignLogo, // Add styling for the logo
+  StyledSignTitle, // Add styling for the title
 } from "./index.styled";
-import { SignInProps } from "@crema/services/auth/firebase/FirebaseAuthProvider";
+import companyLogo from "../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
 
-const SignInFirebase = () => {
+const SignInAzure = () => {
   const navigate = useNavigate();
-  const { logInWithEmailAndPassword, logInWithPopup } = useAuthMethod();
-  const { messages } = useIntl();
+  const { instance } = useMsal(); // Get MSAL instance
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-  const onGoToForgetPassword = () => {
-    navigate("/forget-password");
-  };
+  // Handle Azure login using MSAL's loginPopup
+  const handleAzureLogin = () => {
+    instance
+      .loginPopup(loginRequest)
+      .then((response) => {
+        console.log("Logged in:", response);
+        navigate("/apps/admin/technician-listing");
 
-  function onRememberMe() {
-    console.log(`checked`);
-  }
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
+      });
+  };
 
   return (
     <StyledSign>
       <StyledSignContent>
-        <StyledSignForm
-          name="basic"
-          initialValues={{
-            remember: true,
-            email: "crema.demo@gmail.com",
-            password: "Pass@1!@all",
-          }}
-          onFinish={(values) =>
-            logInWithEmailAndPassword(values as SignInProps)
-          }
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            name="email"
-            className="form-field"
-            rules={[{ required: true, message: "Please input your Email!" }]}
-          >
-            <Input placeholder={messages["common.email"] as string} />
-          </Form.Item>
+        {/* Add the company logo at the top */}
+        <StyledSignLogo>
+          <img src={companyLogo} alt="Company Logo" />
+        </StyledSignLogo>
 
-          <Form.Item
-            name="password"
-            className="form-field"
-            rules={[{ required: true, message: "Please input your Password!" }]}
-          >
-            <Input.Password
-              placeholder={messages["common.password"] as string}
-            />
-          </Form.Item>
+        {/* Add a title for the login form */}
+        <StyledSignTitle>Sign in with Microsoft Azure</StyledSignTitle>
 
-          <StyledRememberMe>
-            <Checkbox onChange={onRememberMe}>
-              <IntlMessages id="common.rememberMe" />
-            </Checkbox>
-            <StyledSignLink onClick={onGoToForgetPassword}>
-              <IntlMessages id="common.forgetPassword" />
-            </StyledSignLink>
-          </StyledRememberMe>
-
+        <StyledSignForm>
           <div className="form-btn-field">
-            <SignInButton type="primary" htmlType="submit">
-              <IntlMessages id="common.login" />
-            </SignInButton>
-          </div>
-
-          <div className="form-field-action">
-            <StyledSignTextGrey>
-              <IntlMessages id="common.dontHaveAccount" />
-            </StyledSignTextGrey>
-            <StyledSignLinkTag to="/signup">
-              <IntlMessages id="common.signup" />
-            </StyledSignLinkTag>
+            <Button type="primary" onClick={handleAzureLogin} block>
+              Signin With Microsoft Azure
+            </Button>
           </div>
         </StyledSignForm>
       </StyledSignContent>
 
-      <StyledSignFooter>
-        <StyledSignedText>
-          <IntlMessages id="common.orLoginWith" />
-        </StyledSignedText>
-        <StyledSignSocialLink>
-          <StyledSignIconBtn
-            onClick={() => logInWithPopup("google")}
-            icon={<GoogleOutlined />}
-          />
-          <StyledSignIconBtn
-            icon={<FaFacebookF />}
-            onClick={() => logInWithPopup("facebook")}
-          />
-          <StyledSignIconBtn
-            icon={<GithubOutlined />}
-            onClick={() => logInWithPopup("github")}
-          />
-          <StyledSignIconBtn
-            icon={<TwitterOutlined />}
-            onClick={() => logInWithPopup("twitter")}
-          />
-        </StyledSignSocialLink>
-      </StyledSignFooter>
+    
     </StyledSign>
   );
 };
 
-export default SignInFirebase;
+export default SignInAzure;

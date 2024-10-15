@@ -201,3 +201,31 @@ export const SignInButton = styled(Button)`
   text-transform: uppercase;
   line-height: 1;
 `;
+
+// Logo styling
+export const StyledSignLogo = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  img {
+    height: 60px; /* Adjust the size as per your logo */
+    width: auto;
+  }
+`;
+
+// Title styling
+export const StyledSignTitle = styled.h2`
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
+`;
+
+export const StyledLogo = styled.img`
+  width: 150px; // Set width to 150px
+  max-width: 100%; // Ensure it scales down on smaller screens
+  height: auto; // Maintain aspect ratio
+  margin-bottom: 20px; // Spacing below the logo
+`;

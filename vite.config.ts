@@ -12,6 +12,7 @@ export default defineConfig({
     hmr: {
       overlay: false,
     },
+    port: 3001, 
   },
   resolve: {
     alias: [
