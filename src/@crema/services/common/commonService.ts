@@ -168,3 +168,19 @@ export const getUserById = async (id: string): Promise<ApiResponse<User>> => {
     throw error;
   }
 };
+
+
+export const verifyUser = async (email: string) => {
+  try {
+    const response = await axios.get('http://localhost:3000/users/verify-user', { // Replace with your correct API URL
+      params: {
+        email: email,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error calling verify-user API:', error);
+    throw error;
+  }
+};

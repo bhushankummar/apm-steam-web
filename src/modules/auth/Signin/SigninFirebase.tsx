@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button, Form } from "antd";
+import { Button, Form, notification } from "antd"; // Import notification from Ant Design
 import { useMsal } from "@azure/msal-react"; // Import MSAL for Azure authentication
 import { loginRequest } from "./authConfig"; // Import Azure login request configuration
 import { useAuthMethod } from "@crema/hooks/AuthHooks"; // Firebase Auth Method
@@ -11,6 +11,7 @@ import {
   StyledSignTitle,
 } from "./index.styled";
 import companyLogo from "../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
+import { verifyUser } from "@crema/services/common/commonService";
 
 const SignInAzure = () => {
   const navigate = useNavigate();
@@ -23,12 +24,29 @@ const SignInAzure = () => {
       const response = await instance.loginPopup(loginRequest); // Azure login
       console.log("Azure login successful:", response);
 
-      // Use the Azure token or adapt this to your Firebase setup if needed
-      await logInWithEmailAndPassword({ email: '', password: '' }); // Pass empty email and password
+      const userRole = await verifyUser("saloni.kale.1117@gmail.com");
+      console.log(userRole.success, "saloni");
 
-      navigate("/apps/admin/technician-listing"); // Redirect after successful login
+      if (userRole.success) {
+        const authToken = response.accessToken; // Use the Azure access token
+        sessionStorage.setItem("authToken", authToken); // Save token to session storage
+
+        await logInWithEmailAndPassword({ email: "", password: "" }); // Firebase login with empty credentials
+
+        navigate("/apps/admin/technician-listing"); // Redirect on successful login
+      } else {
+        // Display an error notification
+        notification.error({
+          message: "Access Denied",
+          description: "You do not have access to the admin dashboard.",
+        });
+      }
     } catch (error) {
       console.error("Azure login failed:", error);
+      notification.error({
+        message: "Login Failed",
+        description: "Azure login failed. Please try again later.",
+      });
     }
   };
 
@@ -50,7 +68,7 @@ const SignInAzure = () => {
           }}
           onFinish={handleAzureLogin}
         >
-          {/* Only Azure Sign-In button now, email and password are handled in the background */}
+          {/* Only Azure Sign-In button */}
           <div className="form-btn-field">
             <Button type="primary" htmlType="submit" block>
               Sign in with Microsoft Azure
@@ -63,5 +81,3 @@ const SignInAzure = () => {
 };
 
 export default SignInAzure;
-
-
