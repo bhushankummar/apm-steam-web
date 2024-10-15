@@ -86,7 +86,9 @@
     "use-url-search-params": "^2.5.1",
     "util": "^0.12.5",
     "uuid": "^9.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@azure/msal-browser": "^3.26.1",
+    "@azure/msal-react": "^2.1.1"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.22.5",
