@@ -93,7 +93,7 @@ export type ProductDataType = {
   productInfo?: ProductInfoType[]; // Optional field
   productSpec?: ProductInfoType[]; // Optional field
   tag?: TagType[]; // Optional field
-  status: 'Active' | 'InActive'; // New field to indicate product status
+  // status: 'Active' | 'InActive'; 
 };
 
 export type ProductInfoType = {

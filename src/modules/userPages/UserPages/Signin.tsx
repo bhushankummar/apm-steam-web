@@ -1,8 +1,7 @@
-import IntlMessages from "@crema/helpers/IntlMessages";
-import { useIntl } from "react-intl";
+
 import AppAnimate from "@crema/components/AppAnimate";
 import { Button } from "antd";
-import { FaSignInAlt, FaUserCircle } from "react-icons/fa"; // Importing a login icon
+import {  FaUserCircle } from "react-icons/fa"; // Importing a login icon
 import microsoftLogo from "./microsoftLogo.png";
 
 import AppPageMeta from "@crema/components/AppPageMeta";
@@ -11,13 +10,9 @@ import {
   StyledUserContainer,
   StyledUserCard,
   StyledUserCardHeader,
-  StyledUserCardLogo,
-  StyledUserCardFooter,
-  StyledUserCardFooterLink,
 } from "../index.styled";
 
 const Signin = () => {
-  const { messages } = useIntl();
 
   const handleMicrosoftLogin = () => {
     // Logic for Microsoft Azure authentication will go here

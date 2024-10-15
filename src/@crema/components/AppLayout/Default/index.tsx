@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Grid} from 'antd';
 import AppSidebar from './AppSidebar';
-import AppHeader from './AppHeader';
 import AppContentView from '../../AppContentView';
-import AppThemeSetting from '../../AppThemeSetting';
 import AppFooter from '../components/AppFooter';
 import clsx from 'clsx';
 import {FooterType} from '@crema/constants/AppEnums';
@@ -27,9 +25,9 @@ const DefaultLayout: React.FC<Props> = ({routes, routesConfig}) => {
   const [isCollapsed, setCollapsed] = useState(false);
   const {footer, footerType} = useLayoutContext();
 
-  const onToggleSidebar = () => {
-    setCollapsed(!isCollapsed);
-  };
+  // const onToggleSidebar = () => {
+  //   setCollapsed(!isCollapsed);
+  // };
 
   useEffect(() => {
     if (!isEmpty(width)) {
@@ -50,16 +48,11 @@ const DefaultLayout: React.FC<Props> = ({routes, routesConfig}) => {
     >
       <AppSidebar isCollapsed={isCollapsed} routesConfig={routesConfig} />
       <StyledAppLayoutMain className='app-layout-main'>
-        {/* <AppHeader
-          isCollapsed={isCollapsed}
-          onToggleSidebar={onToggleSidebar}
-        /> */}
         <StyledMainScrollbar>
           <AppContentView routes={routes} />
           <AppFooter />
         </StyledMainScrollbar>
       </StyledAppLayoutMain>
-      {/* <AppThemeSetting /> */}
     </StyledAppLayout>
   );
 };

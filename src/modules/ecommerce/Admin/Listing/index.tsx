@@ -21,11 +21,13 @@ const ProductListing = () => {
   });
 
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   const [productList, setProductList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const [filteredData, setFilteredData] = useState<any[]>([]);
+
+  console.log(loading,'loading,');
 
   useEffect(() => {
     const storedData = localStorage.getItem("AgentData");
@@ -227,7 +229,7 @@ const ProductListing = () => {
 
         <Col xs={24} lg={24}>
           <AppCard>
-            <ProductTable filteredData={filteredData} loading={loading} />
+            <ProductTable filteredData={filteredData}  />
             <div
               style={{
                 display: "flex",

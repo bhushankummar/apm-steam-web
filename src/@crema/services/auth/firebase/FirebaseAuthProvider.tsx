@@ -78,7 +78,7 @@ const FirebaseAuthProvider: React.FC<FirebaseAuthProviderProps> = ({
   }, []);
 
   // Simulate login with email and password
-  const logInWithEmailAndPassword = async ({ email, password }: SignInProps) => {
+  const logInWithEmailAndPassword = async ({ email }: SignInProps) => {
     fetchStart();
     try {
       // Simulating successful login with mock user data
@@ -102,7 +102,6 @@ const FirebaseAuthProvider: React.FC<FirebaseAuthProviderProps> = ({
   const registerUserWithEmailAndPassword = async ({
     name,
     email,
-    password,
   }: SignUpProps) => {
     fetchStart();
     try {
@@ -124,7 +123,7 @@ const FirebaseAuthProvider: React.FC<FirebaseAuthProviderProps> = ({
   };
 
   // Simulate social login with provider
-  const logInWithPopup = async (providerName: string) => {
+  const logInWithPopup = async () => {
     fetchStart();
     try {
       // Simulating successful login

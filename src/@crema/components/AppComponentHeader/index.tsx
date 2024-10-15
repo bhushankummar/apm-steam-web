@@ -1,6 +1,4 @@
 import React from "react";
-import { Button } from "antd";
-import { LinkOutlined } from "@ant-design/icons";
 import AppAnimate from "../AppAnimate";
 import {
   StyledContainerHeader,
@@ -18,7 +16,6 @@ type AppComponentHeaderProps = {
 const AppComponentHeader: React.FC<AppComponentHeaderProps> = ({
   title,
   description,
-  refUrl,
 }) => {
   return (
     <AppAnimate animation="transition.slideDownIn" delay={200}>
@@ -29,7 +26,7 @@ const AppComponentHeader: React.FC<AppComponentHeaderProps> = ({
             <StyledTextBase level={5}>{description}</StyledTextBase>
           ) : null}
         </StyledHeaderTitle>
-        {refUrl ? (
+        {/* {refUrl ? (
           <div style={{ height: 30 }}>
             <Button
               type="primary"
@@ -45,7 +42,7 @@ const AppComponentHeader: React.FC<AppComponentHeaderProps> = ({
               Reference
             </Button>
           </div>
-        ) : null}
+        ) : null} */}
       </StyledContainerHeader>
     </AppAnimate>
   );

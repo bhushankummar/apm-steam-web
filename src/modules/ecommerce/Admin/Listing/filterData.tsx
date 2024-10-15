@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal } from 'antd';
-import ListingTable from '../ListingTable'; // Adjust the import path based on your structure
+// import ListingTable from '../ListingTable'; // Adjust the import path based on your structure
 
 // interface FilteredDataModalProps {
 //   open: boolean;
@@ -8,7 +8,7 @@ import ListingTable from '../ListingTable'; // Adjust the import path based on y
 //   data: Product[];
 // }
 
-const FilteredDataModal: React.FC<any> = ({ open, onClose, data }) => {
+const FilteredDataModal: React.FC<any> = ({ open, onClose }) => {
     return (
       <Modal 
         title="Filtered Data" 
@@ -17,7 +17,7 @@ const FilteredDataModal: React.FC<any> = ({ open, onClose, data }) => {
         footer={null} 
         width={800} // Set the desired width here
       >
-        <ListingTable data={data} loading={data.length === 0} />
+        {/* <ListingTable data={data} loading={data.length === 0} /> */}
       </Modal>
     );
   };

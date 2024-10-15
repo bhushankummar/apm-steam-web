@@ -6,7 +6,7 @@ import { Col, Button, Select, Input } from "antd";
 import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
-import {getAllUsers} from "../../../../@crema/services/common/commonService"
+import { getAllUsers } from "../../../../@crema/services/common/commonService";
 
 const { Option } = Select;
 
@@ -22,9 +22,7 @@ const ProductListing = () => {
   });
 
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
   const [productList, setProductList] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const [filteredData, setFilteredData] = useState<any[]>([]);
 
@@ -32,21 +30,20 @@ const ProductListing = () => {
     const fetchData = async () => {
       try {
         const parsedData = await getAllUsers();
-    
+
+        console.log(parsedData, 'saloni');
+
         if (parsedData && Array.isArray(parsedData)) {
           setProductList(parsedData);
           applyFilters(parsedData);
         }
       } catch (error) {
         console.error("Error fetching users:", error);
-      } finally {
-        setLoading(false);
       }
     };
-  
+
     fetchData(); // Call the async function
   }, []);
-  
 
   const applyFilters = (data: any[]) => {
     let newFilteredData = [...data];
@@ -96,8 +93,8 @@ const ProductListing = () => {
     );
 
     // Paginate the filtered data
-    const startIndex = page * pageSize;
-    const endIndex = startIndex + pageSize;
+    const startIndex = page * 10; // Assuming default pageSize of 10
+    const endIndex = startIndex + 10;
     const paginatedData = newFilteredData.slice(startIndex, endIndex);
 
     setFilteredData(paginatedData);
@@ -135,17 +132,17 @@ const ProductListing = () => {
     status: "Status",
   };
 
-  const properties = Object.keys(propertyMapping); 
+  const properties = Object.keys(propertyMapping);
 
   const handleAddClient = () => {
     navigate("/apps/admin/add-products");
   };
 
-  const totalPages = Math.ceil(totalCount / pageSize);
+  const totalPages = Math.ceil(totalCount / 10); // Assuming pageSize is 10
 
   return (
     <>
-      <StyledTitle5 style={{textAlign:'center',color:'#0076CE',fontSize:20}}>
+      <StyledTitle5 style={{ textAlign: 'center', color: '#0076CE', fontSize: 20 }}>
         {messages["sidebar.ecommerceAdmin.agentListing"] as string}
       </StyledTitle5>
       <AppRowContainer>

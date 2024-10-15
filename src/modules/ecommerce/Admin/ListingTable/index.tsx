@@ -3,9 +3,8 @@ import { Typography } from "antd";
 import { StyledListingStatus } from "../index.styled";
 import { StyledOrderTable } from "../../Orders/index.styled";
 import { ellipsisLines } from "@crema/helpers/StringHelper";
-import { NavigateFunction, useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+// import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 type FormData = {
   id: number;
@@ -16,11 +15,11 @@ type FormData = {
   status: "Active" | "InActive"; // Assuming this property exists
 };
 
-const getColumns = (navigate: NavigateFunction): ColumnsType<FormData> => [
+const getColumns = (): ColumnsType<FormData> => [
   {
     title: "Full Name",
     key: "fullName",
-    render: (text, record) => (
+    render: ( record: FormData) => (
       <span>{`${record.firstName} ${record.lastName}`}</span>
     ),
   },
@@ -28,7 +27,7 @@ const getColumns = (navigate: NavigateFunction): ColumnsType<FormData> => [
     title: "Email",
     dataIndex: "email",
     key: "email",
-    render: (email) => (
+    render: (email: string) => (
       <Typography.Link style={{ display: "flex", alignItems: "center" }}>
         {ellipsisLines(email)}
       </Typography.Link>
@@ -43,7 +42,7 @@ const getColumns = (navigate: NavigateFunction): ColumnsType<FormData> => [
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (status) => (
+    render: (status: "Active" | "InActive") => (
       <StyledListingStatus
         style={{
           color: status === "Active" ? "#43C888" : "#F84E4E",
@@ -54,14 +53,14 @@ const getColumns = (navigate: NavigateFunction): ColumnsType<FormData> => [
         {status === "Active" ? (
           <>
             <span style={{ marginRight: 5, color: "#43C888", fontWeight: "bold" }}>
-              <CheckCircleOutlined />
+              {/* <CheckCircleOutlined /> */}
             </span>
             <span style={{ color: "#43C888", fontWeight: "bold" }}>Active</span>
           </>
         ) : (
           <>
             <span style={{ marginRight: 5 }}>
-              <CloseCircleOutlined />
+              {/* <CloseCircleOutlined /> */}
             </span>
             InActive
           </>
@@ -75,18 +74,18 @@ const getColumns = (navigate: NavigateFunction): ColumnsType<FormData> => [
     key: "actions",
     className: "order-table-action",
     fixed: "right",
-    render: (_, record) => <OrderActions id={record.id} />,
+    render: (_, record: FormData) => <OrderActions id={record.id} />,
   },
 ];
 
 const ProductTable = ({ filteredData }: { filteredData: FormData[] }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <StyledOrderTable
       hoverColor
       data={filteredData}
-      columns={getColumns(navigate)}
+      columns={getColumns()}
       scroll={{ x: "auto" }}
     />
   );

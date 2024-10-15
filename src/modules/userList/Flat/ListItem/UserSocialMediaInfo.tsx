@@ -1,6 +1,6 @@
 import React from 'react';
 import IntlMessages from '@crema/helpers/IntlMessages';
-import {TwitterOutlined} from '@ant-design/icons';
+// import {TwitterOutlined} from '@ant-design/icons';
 import {FaFacebookF} from 'react-icons/fa';
 import {
   StyledUserFlatSocialInfo,
@@ -29,7 +29,7 @@ const UserSocialMediaInfo: React.FC<UserSocialMediaInfoProps> = ({user}) => {
       </StyledUserFlatSocialInfoItem>
       <StyledUserFlatSocialInfoItem>
         <span>
-          <TwitterOutlined />
+          {/* <TwitterOutlined /> */}
         </span>
         <span>{user.retweets}</span>
         <IntlMessages id='common.retweets' />

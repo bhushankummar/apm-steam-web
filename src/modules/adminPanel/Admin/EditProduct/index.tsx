@@ -44,7 +44,7 @@ const ProductEditPage = () => {
         console.log(`Fetching product with ID: ${id}`);
         const product = await getUserById(id);
         if (product) {
-          setCurrentProduct(product);
+          setCurrentProduct(product as any);
         } else {
           notification.error({
             message: "Error",
