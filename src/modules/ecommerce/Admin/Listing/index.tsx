@@ -172,7 +172,7 @@ const ProductListing = () => {
       }
 
       const response = await axios.post('http://localhost:3000/api/users/find', payload);
-      setProductList(response.data.users);
+      // setProductList(response.data.users);
       setFilteredData(response.data.users);
       setTotalCount(response.data.total);
     } catch (error) {
