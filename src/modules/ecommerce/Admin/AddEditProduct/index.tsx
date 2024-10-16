@@ -39,19 +39,6 @@ const Signup = () => {
     status: 'Active',
   });
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const savedData = await getAllUsers();
-        console.log("savedData", savedData);
-      } catch (error) {
-        console.error('Failed to fetch users:', error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setForm((prev) => ({
@@ -63,13 +50,13 @@ const Signup = () => {
   const onFinish = async () => {
     const newData = { 
       ...form, 
-      id: uuidv4(), 
-      createdAt: new Date().toISOString().split('T')[0],
-      status: form.status || 'Active' // Default status if not set
+      // id: uuidv4(), 
+      // createdAt: new Date().toISOString().split('T')[0],
+      // status: form.status || 'Active'
     };
   
     try {
-      const response = await createUser(newData);
+      const response = await createUser(newData as any); // Call the createUser function
   
       if (response) {
         notification.success({
@@ -79,16 +66,14 @@ const Signup = () => {
   
         navigate('/apps/admin/technician-listing');
       }
-    } catch (error) {
-      // Log error and show error notification
+    } catch (error: any) {
       console.error("Error creating technician:", error);
       notification.error({
         message: "Error",
-        description: error.response?.data?.message || "Failed to create technician.",
+        description: error.message || "Failed to create technician.",
       });
     }
   
-    // Reset the form after submission
     setForm({
       id: uuidv4(),
       firstName: "",
@@ -170,5 +155,6 @@ const Signup = () => {
     </StyledUserPages>
   );
 };
+
 
 export default Signup;

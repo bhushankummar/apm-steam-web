@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { getRouteMenus } from "./VerticalMenuUtils";
 import clsx from "clsx";
 import defaultConfig from "@crema/constants/defaultConfig";
 import { useSidebarContext } from "@crema/context/AppContextProvider/SidebarContextProvider";
@@ -6,12 +7,13 @@ import { MenuStyle } from "@crema/constants/AppEnums";
 import { StyledVerticalNav } from "./index.styled";
 import { useLocation } from "react-router-dom";
 import { RouterConfigData } from "@crema/types/models/Apps";
+import { useIntl } from "react-intl";
 
 type Props = {
   routesConfig: RouterConfigData[];
 };
 
-const AppVerticalNav: React.FC<Props> = () => {
+const AppVerticalNav: React.FC<Props> = ({ routesConfig }) => {
   const { menuStyle, sidebarColorSet } = useSidebarContext();
 
   const { pathname } = useLocation();
@@ -35,6 +37,8 @@ const AppVerticalNav: React.FC<Props> = () => {
     );
     setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
   };
+
+  const { messages } = useIntl();
 
   return (
     <StyledVerticalNav
@@ -63,7 +67,7 @@ const AppVerticalNav: React.FC<Props> = () => {
       defaultOpenKeys={[defaultOpenKeys]} /*
       selectedKeys={[selectedKeys[selectedKeys.length - 1]]}
       defaultSelectedKeys={[selectedKeys[selectedKeys.length - 1]]}*/
-      // items={getRouteMenus(routesConfig, messages)}
+      items={getRouteMenus(routesConfig, messages)}
     />
   );
 };

@@ -61,11 +61,68 @@ const ProductListing = () => {
       } finally {
         setLoading(false);
       }
+      setLoading(false);
     };
   
     fetchUsers(); 
   }, [filterData, page, pageSize]);
   
+  
+  const applyFilters = (data: any[]) => {
+    let newFilteredData = [...data];
+
+    const matchesStatus = filterData.status
+      ? (item: any) => item.status === filterData.status
+      : () => true;
+
+    const matchesProperty = (item: any) => {
+      if (
+        filterData.property &&
+        filterData.operator &&
+        filterData.filterValue
+      ) {
+        const value = item[filterData.property];
+        const filterValue = filterData.filterValue.toLowerCase();
+        const itemValue = value ? value.toString().toLowerCase() : "";
+
+        switch (filterData.operator) {
+          case "equal":
+            return itemValue === filterValue;
+          case "greater":
+            if (filterData.property === "createdAt") {
+              return (
+                new Date(value).getTime() >
+                new Date(filterData.filterValue).getTime()
+              );
+            }
+            return itemValue > filterValue;
+          case "less":
+            if (filterData.property === "createdAt") {
+              return (
+                new Date(value).getTime() <
+                new Date(filterData.filterValue).getTime()
+              );
+            }
+            return itemValue < filterValue;
+          default:
+            return true;
+        }
+      }
+      return true;
+    };
+
+    newFilteredData = newFilteredData.filter(
+      (item) => matchesStatus(item) && matchesProperty(item)
+    );
+
+    // Paginate the filtered data
+    const startIndex = page * pageSize;
+    const endIndex = startIndex + pageSize;
+    const paginatedData = newFilteredData.slice(startIndex, endIndex);
+
+    setFilteredData(paginatedData);
+    setTotalCount(newFilteredData.length); // Update total count for pagination
+  };
 
   const handleApplyFilter = () => {
     setPage(0); 
@@ -191,7 +248,7 @@ const ProductListing = () => {
 
         <Col xs={24} lg={24}>
           <AppCard>
-            <ProductTable filteredData={filteredData}  />
+            <ProductTable filteredData={filteredData} />
             <div
               style={{
                 display: "flex",
