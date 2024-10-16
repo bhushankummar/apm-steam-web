@@ -98,10 +98,11 @@ export const apiClient = axios.create({
   },
 });
 
-// Attach the Bearer token to the headers of each request
+// Attach the Bearer token (idToken) from session storage to the headers of each request
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
-    const token = await getToken(); // Assuming a function to retrieve the token
+    const token = await getToken(); // Assuming a function to retrieve the token from session
+    console.log(token,'tokentoken');
 
     if (token) {
       // If headers exist, ensure proper type casting and set the Authorization header
@@ -121,10 +122,10 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Function to retrieve token from storage (localStorage here, change as needed)
+// Function to retrieve token from session (localStorage to sessionStorage here)
 const getToken = async (): Promise<string | null> => {
-  // Example token retrieval from localStorage
-  return localStorage.getItem('accessToken');
+  // Example token retrieval from sessionStorage
+  return sessionStorage.getItem('idToken');
 };
 
 // Function to create a user
@@ -174,7 +175,6 @@ export const findUsers = async (searchString?: string, currentPage: number = 1, 
   }
 };
 
-
 export const getUserById = async (id: string): Promise<ApiResponse<User>> => {
   try {
     const response: AxiosResponse<ApiResponse<User>> = await apiClient.get(`/users/${id}`);
@@ -185,10 +185,9 @@ export const getUserById = async (id: string): Promise<ApiResponse<User>> => {
   }
 };
 
-
 export const verifyUser = async (email: string) => {
   try {
-    const response = await axios.get('http://localhost:3000/api/users/verify-user', { // Replace with your correct API URL
+    const response = await apiClient.get('/api/users/verify-user', { // Replace with your correct API URL
       params: {
         email: email,
       },
@@ -201,11 +200,10 @@ export const verifyUser = async (email: string) => {
   }
 };
 
-
 export const findOne = async (id: string) => {
   try {
     // Make the request using Axios
-    const response = await axios.get(`http://localhost:3000/api/users/details/${id}`);
+    const response = await apiClient.get(`/api/users/details/${id}`);
     
     // Check if the response status is OK
     if (response.status === 200) {
@@ -219,4 +217,3 @@ export const findOne = async (id: string) => {
     throw error;  // Rethrow the error to be caught in the component
   }
 };
-

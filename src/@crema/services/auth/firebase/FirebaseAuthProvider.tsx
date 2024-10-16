@@ -181,6 +181,7 @@ const FirebaseAuthProvider: React.FC<FirebaseAuthProviderProps> = ({
   const logout = async () => {
     setFirebaseData({ ...firebaseData, isLoading: true });
     try {
+      sessionStorage.removeItem('idToken');
       // Simulating successful logout
       setFirebaseData({
         user: null,
