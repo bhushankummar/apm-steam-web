@@ -49,7 +49,7 @@ const AppHeader = ({showDrawer, routesConfig}: AppHeaderProps) => {
             <a className='trigger' onClick={showDrawer}>
               <AiOutlineMenu />
             </a>
-            <AppLogo />
+            {/* <AppLogo /> */}
             <StyledHeaderSearchHor
               placeholder={messages['common.searchHere'] as string}
             />

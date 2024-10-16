@@ -35,7 +35,7 @@ const AppHeader = ({isCollapsed, onToggleSidebar}: AppHeaderProps) => {
       <a className='trigger' onClick={() => onToggleSidebar(!isCollapsed)}>
         <AiOutlineMenu />
       </a>
-      <AppLogo />
+       {/* <AppLogo /> */} 
       <StyledAppUserHeaderSearch
         placeholder={messages['common.searchHere'] as string}
       />

@@ -33,7 +33,7 @@ const AppHeader = ({showDrawer}: AppHeaderProps) => {
       <a className='trigger' onClick={showDrawer}>
         <AiOutlineMenu />
       </a>
-      <AppLogo />
+      {/* <AppLogo /> */}
       <StyledDrawerLayoutHeaderSearch
         placeholder={messages['common.searchHere'] as string}
       />

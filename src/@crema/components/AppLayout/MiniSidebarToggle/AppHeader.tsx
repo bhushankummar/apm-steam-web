@@ -38,7 +38,7 @@ const AppHeader = ({isCollapsed, onToggleSidebar}: AppHeaderProps) => {
           onClick: onToggleSidebar,
         },
       )}
-      <AppLogo />
+      {/* <AppLogo /> */}
 
       <StyledHeaderSearchMinibar
         placeholder={messages['common.searchHere'] as string}
