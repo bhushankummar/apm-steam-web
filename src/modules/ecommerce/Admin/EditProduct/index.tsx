@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Form, Input, Button, Radio } from "antd";
 import { notification } from "antd";
 import { StyledUserCard, StyledUserCardHeader, StyledUserCardLogo, StyledUserContainer, StyledUserPages } from "../AddEditProduct/index.styled";
+import { updateUser, getUserById } from "@crema/services/common/commonService";
 
 // Define Product type to specify the shape of the product object
 interface Product {
@@ -22,52 +23,49 @@ const ProductEditPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedData = localStorage.getItem("AgentData");
-    if (storedData) {
+    const fetchProduct = async () => {
       try {
-        const products: Product[] = JSON.parse(storedData);  // Define products as Product[]
-        const product = products.find((p: Product) => p.id === id);  // Type p as Product
-        if (product) {
-          setCurrentProduct(product);
+        const response = await getUserById(id);
+        if (response.data) {
+          setCurrentProduct(response.data);
         } else {
           notification.error({
             message: "Error",
-            description: "Product not found.",
+            description: "Technician not found.",
           });
         }
       } catch (error) {
-        console.error("Error parsing stored data:", error);
+        console.error("Error fetching technician data:", error);
         notification.error({
           message: "Error",
-          description: "Failed to load product data.",
+          description: "Failed to load technician data.",
         });
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    };
+
+    fetchProduct();
   }, [id]);
 
-  const handleSave = (values: Product) => {  // Type values as Product
-    const storedData = localStorage.getItem("AgentData");
-    if (storedData) {
-      try {
-        const products: Product[] = JSON.parse(storedData);  // Define products as Product[]
-        const updatedProducts = products.map((product: Product) =>
-          product.id === currentProduct?.id ? { ...currentProduct, ...values } : product
-        );
-        localStorage.setItem("AgentData", JSON.stringify(updatedProducts));
+  const handleSave = async (values: any) => {
+    try {
+      const response = await updateUser(id, values);
+
+      if (response.data) {
         notification.success({
           message: "Success",
           description: "Technician updated successfully.",
         });
         setCurrentProduct({ ...currentProduct, ...values });
         navigate('/apps/admin/technician-listing');
-      } catch (error) {
-        console.error("Error updating stored data:", error);
-        notification.error({
-          message: "Error",
-          description: "Failed to update product data.",
-        });
       }
+    } catch (error) {
+      console.error("Error updating technician:", error);
+      notification.error({
+        message: "Error",
+        description: "Failed to update technician data.",
+      });
     }
   };
 

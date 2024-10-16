@@ -15,6 +15,8 @@ import {
 } from "./index.styled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createUser, getAllUsers } from "@crema/services/common/commonService";
+import axios from "@crema/services/axios";
 
 type FormData = {
   id: string;
@@ -38,18 +40,16 @@ const Signup = () => {
   });
 
   useEffect(() => {
-    const savedData = localStorage.getItem("AgentData");
-    if (savedData) {
+    const fetchUsers = async () => {
       try {
-        const formDataArray = JSON.parse(savedData) as FormData[];
-        if (Array.isArray(formDataArray) && formDataArray.length > 0) {
-          setForm(formDataArray[formDataArray.length - 1]); // Load the latest record
-        }
-        console.log("Loaded data from local storage:", formDataArray);
+        const savedData = await getAllUsers();
+        console.log("savedData", savedData);
       } catch (error) {
-        console.error("Error parsing saved data:", error);
+        console.error('Failed to fetch users:', error);
       }
-    }
+    };
+
+    fetchUsers();
   }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,38 +60,34 @@ const Signup = () => {
     }));
   };
 
-  const onFinish = () => {
-    const savedData = localStorage.getItem("AgentData");
-    const newData = { ...form, id: uuidv4(), createdAt: new Date().toISOString().split('T')[0] };
-
-    if (savedData) {
-      try {
-        const formDataArray = JSON.parse(savedData) as FormData[];
-        formDataArray.push(newData);
-        localStorage.setItem("AgentData", JSON.stringify(formDataArray));
-
-        // Show success notification
+  const onFinish = async () => {
+    const newData = { 
+      ...form, 
+      id: uuidv4(), 
+      createdAt: new Date().toISOString().split('T')[0],
+      status: form.status || 'Active' // Default status if not set
+    };
+  
+    try {
+      const response = await createUser(newData);
+  
+      if (response) {
         notification.success({
           message: "Success",
           description: "Technician has been created successfully.",
         });
-
+  
         navigate('/apps/admin/technician-listing');
-      } catch (error) {
-        console.error("Error parsing saved data:", error);
       }
-    } else {
-      localStorage.setItem("AgentData", JSON.stringify([newData]));
-
-      // Show success notification
-      notification.success({
-        message: "Success",
-        description: "Technician Created Successfully",
+    } catch (error) {
+      // Log error and show error notification
+      console.error("Error creating technician:", error);
+      notification.error({
+        message: "Error",
+        description: error.response?.data?.message || "Failed to create technician.",
       });
-
-      navigate('/apps/admin/technician-listing');
     }
-
+  
     // Reset the form after submission
     setForm({
       id: uuidv4(),

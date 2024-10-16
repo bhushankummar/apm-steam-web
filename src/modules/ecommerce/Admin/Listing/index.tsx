@@ -6,6 +6,7 @@ import { Col, Button, Select, Input } from "antd";
 import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
+import { getAllUsers } from "@crema/services/common/commonService";
 
 const { Option } = Select;
 
@@ -30,18 +31,16 @@ const ProductListing = () => {
   console.log(loading,'loading,');
 
   useEffect(() => {
-    const storedData = localStorage.getItem("AgentData");
-    if (storedData) {
+    const fetchUsers = async () => {
       try {
-        const parsedData = JSON.parse(storedData);
-        if (Array.isArray(parsedData)) {
-          setProductList(parsedData);
-          applyFilters(parsedData);
-        }
+        const savedData = await getAllUsers();
+        console.log("savedData", savedData);
       } catch (error) {
-        console.error("Error parsing stored data:", error);
+        console.error('Failed to fetch users:', error);
       }
-    }
+    };
+
+    fetchUsers();
     setLoading(false);
   }, []);
 
