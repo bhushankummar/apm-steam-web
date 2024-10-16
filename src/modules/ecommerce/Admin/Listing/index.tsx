@@ -16,7 +16,7 @@ const ProductListing = () => {
   const navigate = useNavigate();
 
   const [filterData, setFilterData] = useState({
-    isActive: null as true | false | null,
+    isActive: null as "active" | "inactive" | null,
     property: null as string | null,
     operator: null as string | null,
     filterValue: "",
@@ -72,9 +72,14 @@ const ProductListing = () => {
   const applyFilters = (data: any[]) => {
     let newFilteredData = [...data];
   
-    const matchesStatus = filterData.isActive
-      ? (item: any) => item.isActive === filterData.isActive
-      : () => true;
+  //   const matchesStatus = filterData.isActive
+  // ? (item: any) => {
+  //     if (filterData.isActive === "active") return item.isActive = true;
+  //     if (filterData.isActive === "inactive") return item.isActive = false;
+  //     return true;
+  //   }
+  // : () => true;
+
   
     const matchesProperty = (item: any) => {
       if (filterData.property && filterData.operator && filterData.filterValue) {
@@ -136,9 +141,18 @@ const ProductListing = () => {
         pageSize: pageSize,
       };
 
-      if (filterData.property && filterData.operator && filterData.filterValue) {
+      if (filterData.property === "isActive") {
+        payload = {
+          ...payload,
+          filter: {
+            columnName: "isActive",
+            value: filterData.filterValue.toLowerCase() === "active" ? "true" : "false",
+            operator: "equals",
+          }
+        };
+      } else if (filterData.property && filterData.operator && filterData.filterValue) {
         let filterValue = filterData.filterValue;
-
+  
         if (filterData.property === "createdAt") {
           filterValue = parseDateToTimestamp(filterData.filterValue).toString();
           if (!filterValue) {
