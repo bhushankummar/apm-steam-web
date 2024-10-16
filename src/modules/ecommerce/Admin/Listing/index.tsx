@@ -20,6 +20,7 @@ const ProductListing = () => {
     property: null as string | null,
     operator: null as string | null,
     filterValue: "",
+    operator: 'equals',
   });
 
   const [page, setPage] = useState(0);
@@ -207,7 +208,7 @@ const ProductListing = () => {
     setFilterData({
       isActive: null,
       property: null,
-      operator: null,
+      operator: "equals",
       filterValue: "",
     });
     setFilteredData(productList);
