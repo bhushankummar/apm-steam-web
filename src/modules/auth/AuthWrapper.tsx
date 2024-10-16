@@ -27,16 +27,15 @@ const AuthWrapper: React.FC<Props> = ({children}) => {
         <StyledAuthCard>
           <StyledAuthMainContent>
             <StyledAuthCardHeader>
-              <AppLogo />
+              {/* <AppLogo /> */}
             </StyledAuthCardHeader>
             {children}
           </StyledAuthMainContent>
           <StyledAuthWellAction>
             <StyledAuthWelContent>
-              <h2>Welcome to Crema!</h2>
+              <h2>Welcome to APM Steam!</h2>
               <p>
-                Crema is purely based on Ant Design components and follows Ant
-                Design guidelines.
+              APM (Admin Panel Management) Steam App is an intuitive and efficient tool designed to streamline the management of administrative tasks for Steam-based platforms
               </p>
             </StyledAuthWelContent>
           </StyledAuthWellAction>

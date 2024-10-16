@@ -1,70 +1,3 @@
-// // src/services/apiService.js
-
-// import axios from 'axios';
-
-// // Set up axios instance with base URL
-// export const apiClient = axios.create({
-//   baseURL: 'http://localhost:3000', // Replace with your API base URL
-//   headers: {
-//     'Content-Type': 'application/json',
-//   },
-// });
-
-// // Function to create a user
-// export const createUser = async (userData:any) => {
-//   try {
-//     const response = await apiClient.post('/users', userData);
-//     return response.data;
-//   } catch (error) {
-//     // Handle error (you can customize this further)
-//     console.error('Error creating user:', error);
-//     throw error;
-//   }
-// };
-
-// export const updateUser = async (userId: string, updatedData: any) => {
-//     try {
-//       const response = await apiClient.put(`/users/${userId}`, updatedData); 
-//       return response.data;
-//     } catch (error) {
-//       console.error('Error updating user:', error);
-//       throw error;
-//     }
-//   };
-  
-
-//   export const deleteUser = async (userId: string) => {
-//     try {
-//       const response = await apiClient.delete(`/users/${userId}`);
-//       return response.data;
-//     } catch (error: any) {
-//       console.error('Error deleting user:', error.response || error.message);
-//       throw new Error(error.response?.data?.message || 'Failed to delete user');
-//     }
-//   };
-  
-  
-//   export const findUsers = async () => {
-//     try {
-//       const response = await apiClient.get('/users');
-//       return response.data; // Assuming the API returns the list of users in the data field
-//     } catch (error) {
-//       console.error('Error fetching users:', error);
-//       throw error;
-//     }
-//   };
-  
-//   export const getUserById = async (id: string) => {
-//     try {
-//       const response = await apiClient.get(`/users/${id}`);
-//       return response.data;
-//     } catch (error) {
-//       console.error("Error fetching user by ID:", error);
-//       throw error;
-//     }
-//   };
-
-
 import axios, { AxiosResponse, InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
 
 // Define User type (you can extend this based on the actual user model)
@@ -85,14 +18,10 @@ interface ApiResponse<T> {
   message?: string;
 }
 
-interface UsersResponse {
-  users: User[];
-  total: number;
-}
 
 // Set up axios instance with base URL
 export const apiClient = axios.create({
-  baseURL: 'http://localhost:3000', // Replace with your API base URL
+  baseURL: import.meta.env.VITE_API_URL as string, // Replace with your API base URL
   headers: {
     'Content-Type': 'application/json',
   },

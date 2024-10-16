@@ -1,6 +1,7 @@
 import React from 'react';
 import {useSidebarContext} from '@crema/context/AppContextProvider/SidebarContextProvider';
 import {StyledAppLogo} from './index.styled';
+import companyLogo from "../../../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
 
 type AppLogoProps = {
   hasSidebarColor?: boolean;
@@ -10,9 +11,9 @@ const AppLogo: React.FC<AppLogoProps> = ({hasSidebarColor}) => {
   return (
     <StyledAppLogo>
       {hasSidebarColor && sidebarColorSet.mode === 'dark' ? (
-        <img src='/assets/images/logo-white-with-name.png' alt='crema-logo' />
+        <img src={companyLogo} alt='crema-logo' />
       ) : (
-        <img src='/assets/images/logo-with-name.png' alt='crema-logo' />
+        <img src={companyLogo} alt='crema-logo' />
       )}
     </StyledAppLogo>
   );

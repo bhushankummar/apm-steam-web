@@ -33,7 +33,7 @@ const AppHeader: React.FC<Props> = ({isCollapsed, onToggleSidebar}) => {
       <a className='trigger' onClick={() => onToggleSidebar(!isCollapsed)}>
         <AiOutlineMenu />
       </a>
-      {/* <AppLogo /> */}
+      {/* {/* <AppLogo /> */} */}
       <StyledHeaderSearch
         placeholder={messages['common.searchHere'] as string}
       />

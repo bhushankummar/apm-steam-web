@@ -18,7 +18,7 @@ const AppHeader = ({ showDrawer }: AppHeaderProps) => {
       <StyledTrigger onClick={showDrawer}>
         <AiOutlineMenu />
       </StyledTrigger>
-      <AppLogo />
+      {/* <AppLogo /> */}
       <StyledBitbucketSearch
         placeholder={messages["common.searchHere"] as string}
       />

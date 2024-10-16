@@ -25,7 +25,7 @@ const AppHeader = () => {
 
   return (
     <StyledAppHeaderMini className='app-header-mini'>
-      <AppLogo />
+      {/* <AppLogo /> */}
 
       <StyledHeaderSearchMini
         placeholder={messages['common.searchHere'] as string}
