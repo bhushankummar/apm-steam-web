@@ -32,6 +32,5 @@ export default {
 
 ## Deploy (manual)
 ```
-- npm install (if new package)
-- npm run deploy (It will make a build and copy the dist to /usr/share/nginx/html folder)
+- npm run deploy:dev
 ```

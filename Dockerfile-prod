@@ -1,0 +1,12 @@
+# Stage 1
+FROM node:20-slim as stage1
+WORKDIR /apm
+COPY . .
+RUN npm install
+RUN npm run build
+RUN echo $NODE_ENV
+
+# Stage 2
+FROM nginx:1.20.0-alpine
+COPY --from=stage1 /apm/dist /usr/share/nginx/html
+COPY --from=stage1 /apm/nginx/prod-nginx.conf /etc/nginx/conf.d/default.conf
