@@ -5,7 +5,7 @@ const Orders = React.lazy(() => import("../../../modules/adminPanel/Orders"));
 const ProductListing = React.lazy(() => import("../../../modules/adminPanel/Admin/Listing"));
 const AddProduct = React.lazy(() => import("../../../modules/adminPanel/Admin/AddEditProduct"));
 const EditProduct = React.lazy(() => import("../../../modules/adminPanel/Admin/EditProduct"));
-const DeleteProduct = React.lazy(() => import("../../../modules/adminPanel/Admin/DeleteProduct"));
+const DeleteProduct = React.lazy(() => import("../../../modules/adminPanel/Admin/DeleteProduct/DeleteProduct"));
 const LogInformation = React.lazy(() => import("../../../modules/adminPanel/Admin/LogTable"));
 const ErrorLogInformation = React.lazy(() => import("../../../modules/adminPanel/Admin/errorLogTable"));
 

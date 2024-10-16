@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, notification } from "antd";
 import { useNavigate } from "react-router-dom";
-import { deleteUser } from "../../../../@crema/services/common/commonService"; // Import the deleteUser function
+import { deleteUser } from "../../../../@crema/services/common/commonService"; 
 
 const DeleteComponent = () => {
   const [loading, setLoading] = useState(false);
@@ -13,14 +13,14 @@ const DeleteComponent = () => {
       await deleteUser("user-id-to-delete"); // Replace with actual user ID or logic to fetch it
       notification.success({
         message: "Success",
-        description: "User deleted successfully.",
+        description: "Technician deleted successfully.",
       });
-      navigate("/apps/admin/technician-listing"); // Redirect after deletion
+      navigate("/apps/admin/technician-listing"); 
     } catch (error) {
-      console.error("Error deleting user:", error);
+      console.error("Error deleting technician:", error);
       notification.error({
         message: "Error",
-        description: "Failed to delete user.",
+        description: "Failed to delete technician.",
       });
     } finally {
       setLoading(false);

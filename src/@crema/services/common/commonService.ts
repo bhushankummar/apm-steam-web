@@ -92,7 +92,7 @@ interface UsersResponse {
 
 // Set up axios instance with base URL
 export const apiClient = axios.create({
-  baseURL: 'http://localhost:3000', // Replace with your API base URL
+  baseURL: import.meta.env.VITE_API_BASE_URL, // Replace with your API base URL
   headers: {
     'Content-Type': 'application/json',
   },
@@ -188,7 +188,7 @@ export const getUserById = async (id: string): Promise<ApiResponse<User>> => {
 
 export const verifyUser = async (email: string) => {
   try {
-    const response = await axios.get('http://localhost:3000/api/users/verify-user', { // Replace with your correct API URL
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}api/users/verify-user`, { // Replace with your correct API URL
       params: {
         email: email,
       },
@@ -206,7 +206,7 @@ export const verifyUser = async (email: string) => {
 export const findOne = async (id: string) => {
   try {
     // Make the request using Axios
-    const response = await axios.get(`http://localhost:3000/api/users/details/${id}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/users/details/${id}`);
     
     // Check if the response status is OK
     if (response.status === 200) {

@@ -5,7 +5,7 @@ import AppCard from "@crema/components/AppCard";
 import { Col, Button, Select, Input } from "antd";
 import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
-import ProductTable from "../ListingTable";
+import ProductTable from "../ListingTable/ListingTable";
 import { getAllUsers } from "@crema/services/common/commonService";
 import { User } from "@auth0/auth0-spa-js";
 
@@ -24,7 +24,7 @@ const ProductListing = () => {
 
   const [page, setPage] = useState(0);
   const [pageSize] = useState(10);
-  const [productList, setProductList] = useState<any[]>([]);
+  const [technicianList, setTechnicianList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const [filteredData, setFilteredData] = useState<any[]>([]);
@@ -41,9 +41,9 @@ const ProductListing = () => {
     
           // Ensure that users is an array before using it
           if (Array.isArray(users)) {
-            setProductList(users); // Set the fetched user data to productList
+            setTechnicianList(users); // Set the fetched user data to technicianList
             setFilteredData(users); // Initially set the filtered data to display all
-            setTotalCount(savedData.total); // Set the total count for pagination
+            setTotalCount(savedData.total);
           } else {
             console.error("Expected users data to be an array but got:", users);
           }
@@ -118,7 +118,7 @@ const ProductListing = () => {
   };
 
   const handleApplyFilter = () => {
-    applyFilters(productList); // Apply filters to the stored product list
+    applyFilters(technicianList); // Apply filters to the stored product list
     setPage(0); // Reset to first page
   };
 
@@ -129,14 +129,14 @@ const ProductListing = () => {
       operator: null,
       filterValue: "",
     });
-    setFilteredData(productList);
-    setTotalCount(productList.length); // Reset total count
+    setFilteredData(technicianList);
+    setTotalCount(technicianList.length); // Reset total count
     setPage(0); // Reset to first page
   };
 
   const onChangePage = (newPage: number) => {
     setPage(newPage);
-    applyFilters(productList); // Reapply filters on page change
+    applyFilters(technicianList); // Reapply filters on page change
   };
 
   // Mapping for properties

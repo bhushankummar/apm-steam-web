@@ -59,10 +59,10 @@ const ProductEditPage = () => {
         throw new Error("Invalid response from the server.");
       }
     } catch (error) {
-      console.error("Error updating product:", error);
+      console.error("Error updating technician:", error);
       notification.error({
         message: "Error",
-        description: "Failed to update product data.",
+        description: "Failed to update technician data.",
       });
     }
   };

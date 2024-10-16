@@ -22,7 +22,7 @@ const ProductListing = () => {
   });
 
   const [page, setPage] = useState(0);
-  const [productList, setProductList] = useState<any[]>([]);
+  const [technicianList, setTechnicianList] = useState<any[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [filteredData, setFilteredData] = useState<any[]>([]);
 
@@ -34,7 +34,7 @@ const ProductListing = () => {
         console.log(parsedData, 'saloni');
 
         if (parsedData && Array.isArray(parsedData)) {
-          setProductList(parsedData);
+          setTechnicianList(parsedData);
           applyFilters(parsedData);
         }
       } catch (error) {
@@ -102,7 +102,7 @@ const ProductListing = () => {
   };
 
   const handleApplyFilter = () => {
-    applyFilters(productList); // Apply filters to the stored product list
+    applyFilters(technicianList); // Apply filters to the stored product list
     setPage(0); // Reset to first page
   };
 
@@ -113,14 +113,14 @@ const ProductListing = () => {
       operator: null,
       filterValue: "",
     });
-    setFilteredData(productList);
-    setTotalCount(productList.length); // Reset total count
+    setFilteredData(technicianList);
+    setTotalCount(technicianList.length); // Reset total count
     setPage(0); // Reset to first page
   };
 
   const onChangePage = (newPage: number) => {
     setPage(newPage);
-    applyFilters(productList); // Reapply filters on page change
+    applyFilters(technicianList); // Reapply filters on page change
   };
 
   // Mapping for properties

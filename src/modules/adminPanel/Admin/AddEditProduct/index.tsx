@@ -72,13 +72,11 @@ const onFinish = async () => {
     // Call the createUser function to send the new data to the API
     // await createUser(newData);
 
-    // Show success notification
     notification.success({
       message: "Success",
       description: "Technician has been created successfully.",
     });
 
-    // Navigate to the technician listing page
     navigate('/apps/admin/technician-listing');
 
     // Reset the form after successful submission
@@ -93,7 +91,6 @@ const onFinish = async () => {
   } catch (error) {
     console.error("Failed to create user:", error);
 
-    // Show error notification
     notification.error({
       message: "Error",
       description: "Failed to create technician. Please try again.",

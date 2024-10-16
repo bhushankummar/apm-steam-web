@@ -34,7 +34,7 @@ const ProductEditPage = () => {
         // Handle the case where id is undefined
         notification.error({
           message: "Error",
-          description: "User ID is not provided.",
+          description: "Technician ID is not provided.",
         });
         navigate("/error-page"); // Or any fallback route
         return;
