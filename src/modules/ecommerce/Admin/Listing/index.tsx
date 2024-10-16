@@ -6,10 +6,10 @@ import { Col, Button, Select, Input } from "antd";
 import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
+import axios from "@crema/services/axios";
+import moment from "moment";
+import companyLogo from "../../../../assets/images/apmLogo.png"; 
 import { findUsers } from "@crema/services/common/commonService";
-import { StyledUserCardLogo } from "../AddEditProduct/index.styled";
-import companyLogo from "../../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
-import { StyledContainer } from "@crema/components/AppLayout/HorDefault/index.styled";
 
 const { Option } = Select;
 
@@ -18,10 +18,10 @@ const ProductListing = () => {
   const navigate = useNavigate();
 
   const [filterData, setFilterData] = useState({
-    status: null as "Active" | "InActive" | null,
+    isActive: null as "active" | "inactive" | null,
     property: null as string | null,
-    operator: null as string | null,
     filterValue: "",
+    operator: 'equals',
   });
 
   const [page, setPage] = useState(0);
@@ -33,40 +33,64 @@ const ProductListing = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setLoading(true);
       try {
-        const savedData = await findUsers();
-        console.log("savedData:", savedData);
+        console.log('Fetching filtered data from backend...');
 
-        if (savedData && savedData.users) {
-          const users = savedData.users;
+        let payload: any = {
+          currentPage: page + 1,  
+          pageSize: pageSize,    
+        };
 
-          if (Array.isArray(users)) {
-            setProductList(users);
-            setFilteredData(users);
-            setTotalCount(savedData.total);
-          } else {
-            console.error("Expected users data to be an array but got:", users);
-          }
+        if (filterData.property && filterData.operator && filterData.filterValue) {
+          payload = {
+            ...payload,
+            filter: {
+              columnName: filterData.property, 
+              value: filterData.filterValue,    
+              operator: filterData.operator,    
+            }
+          };
         } else {
           console.error(
             "Failed to fetch users: savedData or savedData.users is undefined"
           );
         }
+  
+        const response = await axios.post(`${import.meta.env.VITE_API_URL as string}/api/users/find`, payload);
+  
+        setProductList(response.data.users);
+        setFilteredData(response.data.users);
+        setTotalCount(response.data.total); 
+  
       } catch (error) {
-        console.error("Failed to fetch users:", error);
+        console.error('Failed to fetch users:', error);
+      } finally {
+        setLoading(false);
       }
       setLoading(false);
     };
-
-    fetchUsers();
-  }, []);
-
+  
+    fetchUsers(); 
+  }, [ page, pageSize]);
+  
+  
   const applyFilters = (data: any[]) => {
     let newFilteredData = [...data];
+  
+    const matchesStatus = filterData.isActive
+  ? (item: any) => {
+      if (filterData.isActive === "active") return item.isActive = true;
+      if (filterData.isActive === "inactive") return item.isActive = false;
+      return true;
+    }
+  : () => true;
 
-    const matchesStatus = filterData.status
-      ? (item: any) => item.status === filterData.status
-      : () => true;
+  
+
+    // const matchesStatus = filterData.status
+    //   ? (item: any) => item.status === filterData.status
+    //   : () => true;
 
     const matchesProperty = (item: any) => {
       if (
@@ -82,30 +106,28 @@ const ProductListing = () => {
           // Convert filterValue (date in MM/DD/YYYY format) to Unix timestamp
           const filterUnixTimestamp =
             new Date(filterData.filterValue).getTime() / 1000; // in seconds
-          const itemUnixTimestamp = new Date(value).getTime() / 1000; // in seconds
 
           switch (filterData.operator) {
             case "equal":
-              return itemUnixTimestamp === filterUnixTimestamp;
+              return parseInt(itemValue) === filterUnixTimestamp;
             case "greater":
-              return itemUnixTimestamp > filterUnixTimestamp;
+              return parseInt(itemValue) > filterUnixTimestamp;
             case "less":
-              return itemUnixTimestamp < filterUnixTimestamp;
+              return parseInt(itemValue) < filterUnixTimestamp;
             default:
               return true;
           }
-        } else {
-          // For other properties (non-date), continue with the string comparison
-          switch (filterData.operator) {
-            case "equal":
-              return itemValue === filterValue;
-            case "greater":
-              return itemValue > filterValue;
-            case "less":
-              return itemValue < filterValue;
-            default:
-              return true;
-          }
+        }
+  
+        switch (filterData.operator) {
+          case "equal":
+            return itemValue === filterValue;
+          case "greater":
+            return itemValue > filterValue;
+          case "less":
+            return itemValue < filterValue;
+          default:
+            return true;
         }
       }
       return true;
@@ -124,16 +146,67 @@ const ProductListing = () => {
     setTotalCount(newFilteredData.length);
   };
 
-  const handleApplyFilter = () => {
-    applyFilters(productList);
-    setPage(0);
+  const handleApplyFilter = async () => {
+    setLoading(true);
+    setPage(0); // Reset to the first page
+  
+    try {
+      let filter;
+      let searchString;
+  
+      if (filterData.property === "isActive") {
+        filter = {
+          columnName: "isActive",
+          value: filterData.filterValue.toLowerCase() === "active" ? "true" : "false",
+          operator: "equals",
+        };
+      } else if (filterData.property && filterData.operator && filterData.filterValue) {
+        let filterValue = filterData.filterValue;
+  
+        if (filterData.property === "createdAt") {
+          filterValue = parseDateToTimestamp(filterData.filterValue).toString();
+          if (!filterValue) {
+            alert("Please enter a valid date in DD/MM/YYYY format");
+            return;
+          }
+        }
+  
+        filter = {
+          columnName: filterData.property,
+          value: filterValue,
+          operator: filterData.operator,
+        };
+      }
+  
+      // Now call findUsers and pass the filter object
+      const response = await findUsers(searchString, 1, pageSize, filter);
+      
+      setFilteredData(response.users);
+      setTotalCount(response.total);
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  
+  
+  const parseDateToTimestamp = (dateString:string) => {
+    const momentDate = moment(dateString, 'DD/MM/YYYY', true); 
+  
+    if (!momentDate.isValid()) {
+      throw new Error("Invalid date format - please use DD/MM/YYYY");
+    }
+  
+    return momentDate.unix(); 
   };
 
   const handleCancelFilter = () => {
     setFilterData({
-      status: null,
+      isActive: null,
       property: null,
-      operator: null,
+      operator: "equals",
       filterValue: "",
     });
     setFilteredData(productList);
@@ -151,7 +224,7 @@ const ProductListing = () => {
     lastName: "Last Name",
     email: "Email",
     createdAt: "Date Added",
-    status: "Status",
+    isActive: "Status",
   };
 
   const properties = Object.keys(propertyMapping);
@@ -205,9 +278,9 @@ const ProductListing = () => {
                     setFilterData({ ...filterData, operator: value })
                   }
                 >
-                  <Option value="equal">Equal</Option>
-                  <Option value="greater">Greater Than</Option>
-                  <Option value="less">Less Than</Option>
+                  <Option value="equals">Equal</Option>
+                  <Option value="greaterThan">Greater Than</Option>
+                  <Option value="lessThan">Less Than</Option>
                 </Select>
                 <Input
                   placeholder="Value"
@@ -262,7 +335,10 @@ const ProductListing = () => {
 
         <Col xs={24} lg={24}>
           <AppCard>
-            <ProductTable filteredData={filteredData} />
+            <ProductTable filteredData={filteredData.map(user => ({
+              ...user,
+              createdAt: user.createdAt 
+          }))} />
             <div
               style={{
                 display: "flex",
