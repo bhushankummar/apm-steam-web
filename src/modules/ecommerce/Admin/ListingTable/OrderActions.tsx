@@ -26,7 +26,7 @@ const OrderActions = ({ id }: Props) => {
       case "2":
         // Show confirmation dialog for deletion
         Modal.confirm({
-          title: 'Are you sure you want to delete this agent?',
+          title: 'Are you sure you want to Delete this Technician?',
           onOk: () => handleDelete(id),
         });
         break;

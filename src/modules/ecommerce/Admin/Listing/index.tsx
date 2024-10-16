@@ -7,6 +7,9 @@ import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
 import { findUsers } from "@crema/services/common/commonService";
+import { StyledUserCardLogo } from "../AddEditProduct/index.styled";
+import companyLogo from "../../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
+import { StyledContainer } from "@crema/components/AppLayout/HorDefault/index.styled";
 
 const { Option } = Select;
 
@@ -45,7 +48,9 @@ const ProductListing = () => {
             console.error("Expected users data to be an array but got:", users);
           }
         } else {
-          console.error("Failed to fetch users: savedData or savedData.users is undefined");
+          console.error(
+            "Failed to fetch users: savedData or savedData.users is undefined"
+          );
         }
       } catch (error) {
         console.error("Failed to fetch users:", error);
@@ -58,22 +63,27 @@ const ProductListing = () => {
 
   const applyFilters = (data: any[]) => {
     let newFilteredData = [...data];
-  
+
     const matchesStatus = filterData.status
       ? (item: any) => item.status === filterData.status
       : () => true;
-  
+
     const matchesProperty = (item: any) => {
-      if (filterData.property && filterData.operator && filterData.filterValue) {
+      if (
+        filterData.property &&
+        filterData.operator &&
+        filterData.filterValue
+      ) {
         const value = item[filterData.property];
         const filterValue = filterData.filterValue.toLowerCase();
         const itemValue = value ? value.toString().toLowerCase() : "";
-  
+
         if (filterData.property === "createdAt") {
           // Convert filterValue (date in MM/DD/YYYY format) to Unix timestamp
-          const filterUnixTimestamp = new Date(filterData.filterValue).getTime() / 1000; // in seconds
+          const filterUnixTimestamp =
+            new Date(filterData.filterValue).getTime() / 1000; // in seconds
           const itemUnixTimestamp = new Date(value).getTime() / 1000; // in seconds
-  
+
           switch (filterData.operator) {
             case "equal":
               return itemUnixTimestamp === filterUnixTimestamp;
@@ -100,20 +110,19 @@ const ProductListing = () => {
       }
       return true;
     };
-  
+
     newFilteredData = newFilteredData.filter(
       (item) => matchesStatus(item) && matchesProperty(item)
     );
-  
+
     // Paginate the filtered data
     const startIndex = page * pageSize;
     const endIndex = startIndex + pageSize;
     const paginatedData = newFilteredData.slice(startIndex, endIndex);
-  
+
     setFilteredData(paginatedData);
     setTotalCount(newFilteredData.length);
   };
-  
 
   const handleApplyFilter = () => {
     applyFilters(productList);
@@ -155,9 +164,20 @@ const ProductListing = () => {
 
   return (
     <>
-      <StyledTitle5 style={{ textAlign: "center", color: "#0076CE", fontSize: 20 }}>
-        {messages["sidebar.ecommerceAdmin.agentListing"] as string}
-      </StyledTitle5>
+  <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+  <div style={{ marginRight: "10px" }}>
+    <img 
+      src={companyLogo} 
+      alt="crema" 
+      title="crema" 
+      style={{ width: "80px", height: "30px",marginBottom:"10px" }} // Adjust the size here
+    />
+  </div>
+  <StyledTitle5 style={{ color: "#0076CE", fontSize: 20 }}>
+    {messages["sidebar.ecommerceAdmin.agentListing"] as string}
+  </StyledTitle5>
+</div>
+
       <AppRowContainer>
         <Col xs={24} lg={24} style={{ position: "relative", width: "100%" }}>
           <div style={{ flexGrow: 1 }}>
