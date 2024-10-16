@@ -6,8 +6,7 @@ import { Col, Button, Select, Input } from "antd";
 import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
-import { getAllUsers } from "@crema/services/common/commonService";
-import { User } from "@auth0/auth0-spa-js";
+import { findUsers } from "@crema/services/common/commonService";
 
 const { Option } = Select;
 
@@ -32,18 +31,16 @@ const ProductListing = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const savedData = await getAllUsers();
+        const savedData = await findUsers();
         console.log("savedData:", savedData);
-    
-        // Check if savedData and savedData.users are defined
+
         if (savedData && savedData.users) {
           const users = savedData.users;
-    
-          // Ensure that users is an array before using it
+
           if (Array.isArray(users)) {
-            setProductList(users); // Set the fetched user data to productList
-            setFilteredData(users); // Initially set the filtered data to display all
-            setTotalCount(savedData.total); // Set the total count for pagination
+            setProductList(users);
+            setFilteredData(users);
+            setTotalCount(savedData.total);
           } else {
             console.error("Expected users data to be an array but got:", users);
           }
@@ -55,12 +52,10 @@ const ProductListing = () => {
       }
       setLoading(false);
     };
-    
-    
-  
+
     fetchUsers();
   }, []);
-  
+
   const applyFilters = (data: any[]) => {
     let newFilteredData = [...data];
 
@@ -69,11 +64,7 @@ const ProductListing = () => {
       : () => true;
 
     const matchesProperty = (item: any) => {
-      if (
-        filterData.property &&
-        filterData.operator &&
-        filterData.filterValue
-      ) {
+      if (filterData.property && filterData.operator && filterData.filterValue) {
         const value = item[filterData.property];
         const filterValue = filterData.filterValue.toLowerCase();
         const itemValue = value ? value.toString().toLowerCase() : "";
@@ -83,18 +74,12 @@ const ProductListing = () => {
             return itemValue === filterValue;
           case "greater":
             if (filterData.property === "createdAt") {
-              return (
-                new Date(value).getTime() >
-                new Date(filterData.filterValue).getTime()
-              );
+              return new Date(value).getTime() > new Date(filterData.filterValue).getTime();
             }
             return itemValue > filterValue;
           case "less":
             if (filterData.property === "createdAt") {
-              return (
-                new Date(value).getTime() <
-                new Date(filterData.filterValue).getTime()
-              );
+              return new Date(value).getTime() < new Date(filterData.filterValue).getTime();
             }
             return itemValue < filterValue;
           default:
@@ -114,12 +99,12 @@ const ProductListing = () => {
     const paginatedData = newFilteredData.slice(startIndex, endIndex);
 
     setFilteredData(paginatedData);
-    setTotalCount(newFilteredData.length); // Update total count for pagination
+    setTotalCount(newFilteredData.length);
   };
 
   const handleApplyFilter = () => {
-    applyFilters(productList); // Apply filters to the stored product list
-    setPage(0); // Reset to first page
+    applyFilters(productList);
+    setPage(0);
   };
 
   const handleCancelFilter = () => {
@@ -130,16 +115,15 @@ const ProductListing = () => {
       filterValue: "",
     });
     setFilteredData(productList);
-    setTotalCount(productList.length); // Reset total count
-    setPage(0); // Reset to first page
+    setTotalCount(productList.length);
+    setPage(0);
   };
 
   const onChangePage = (newPage: number) => {
     setPage(newPage);
-    applyFilters(productList); // Reapply filters on page change
+    applyFilters(productList);
   };
 
-  // Mapping for properties
   const propertyMapping: Record<string, string> = {
     firstName: "First Name",
     lastName: "Last Name",
@@ -148,7 +132,7 @@ const ProductListing = () => {
     status: "Status",
   };
 
-  const properties = Object.keys(propertyMapping); // Use the keys for filtering
+  const properties = Object.keys(propertyMapping);
 
   const handleAddClient = () => {
     navigate("/apps/admin/add-products");
@@ -158,7 +142,7 @@ const ProductListing = () => {
 
   return (
     <>
-      <StyledTitle5 style={{textAlign:'center',color:'#0076CE',fontSize:20}}>
+      <StyledTitle5 style={{ textAlign: "center", color: "#0076CE", fontSize: 20 }}>
         {messages["sidebar.ecommerceAdmin.agentListing"] as string}
       </StyledTitle5>
       <AppRowContainer>

@@ -6,7 +6,7 @@ import { Col, Button, Select, Input } from "antd";
 import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
-import { getAllUsers } from "../../../../@crema/services/common/commonService";
+import { findUsers } from "../../../../@crema/services/common/commonService";
 
 const { Option } = Select;
 
@@ -29,7 +29,7 @@ const ProductListing = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const parsedData = await getAllUsers();
+        const parsedData = await findUsers();
 
         console.log(parsedData, 'saloni');
 

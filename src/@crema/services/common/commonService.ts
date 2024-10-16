@@ -44,7 +44,7 @@
 //   };
   
   
-//   export const getAllUsers = async () => {
+//   export const findUsers = async () => {
 //     try {
 //       const response = await apiClient.get('/users');
 //       return response.data; // Assuming the API returns the list of users in the data field
@@ -158,7 +158,7 @@ export const deleteUser = async (userId: string): Promise<ApiResponse<null>> => 
   }
 };
 
-export const getAllUsers = async (searchString?: string, currentPage: number = 1, pageSize: number = 10): Promise<any> => {
+export const findUsers = async (searchString?: string, currentPage: number = 1, pageSize: number = 10): Promise<any> => {
   try {
     const payload = {
       searchString,
@@ -194,7 +194,6 @@ export const verifyUser = async (email: string) => {
       },
     });
 
-    console.log(response,'response00000000');
     return response.data;
   } catch (error) {
     console.error('Error calling verify-user API:', error);

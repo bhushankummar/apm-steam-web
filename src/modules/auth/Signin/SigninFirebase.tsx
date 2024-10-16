@@ -27,9 +27,9 @@ const SignInAzure = () => {
       const userRole = await verifyUser("saloni.kale.1117@gmail.com");
       console.log(userRole.success, "saloni");
 
-      if (userRole.success) {
-        const authToken = response.accessToken; // Use the Azure access token
-        sessionStorage.setItem("authToken", authToken); // Save token to session storage
+      if (userRole.success ) {
+        const idToken = response.accessToken; // Use the Azure access token
+        sessionStorage.setItem("idToken", idToken); // Save token to session storage
 
         await logInWithEmailAndPassword({ email: "", password: "" }); // Firebase login with empty credentials
 

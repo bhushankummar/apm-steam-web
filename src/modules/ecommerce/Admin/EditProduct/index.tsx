@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {  useParams } from "react-router-dom"; // Import useParams from react-router-dom
+import {  useNavigate, useParams } from "react-router-dom"; // Import useParams from react-router-dom
 import { Form, Input, Button, Radio, notification } from "antd";
 import { findOne, updateUser } from "@crema/services/common/commonService"; // Assuming findOne is imported
 import { StyledUserCard, StyledUserCardHeader, StyledUserCardLogo, StyledUserContainer, StyledUserPages } from "../AddEditProduct/index.styled";
@@ -8,6 +8,7 @@ const ProductEditPage = () => {
   const { id } = useParams<{ id: string }>(); // Get the ID from the URL
   const [currentProduct, setCurrentProduct] = useState<any>(null); // Initialize with null to show loading
   const [loading, setLoading] = useState(true); // Loading state to show a loading indicator
+  const navigate = useNavigate();
 
   // Fetch the product data based on the id from the URL
   const fetchProductById = async (id: string) => {
@@ -55,6 +56,8 @@ const ProductEditPage = () => {
 
         // Update local state with the updated values (bypass fetchProductById)
         setCurrentProduct({ ...currentProduct, ...updatedValues, email: currentProduct.email });
+        navigate('/apps/admin/technician-listing');
+
       } else {
         throw new Error("Invalid response from the server.");
       }

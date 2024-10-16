@@ -15,7 +15,7 @@ import {
 } from "./index.styled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser, getAllUsers } from '../../../../@crema/services/common/commonService'; // Import the API service
+import { createUser, findUsers } from '../../../../@crema/services/common/commonService'; // Import the API service
 
 type FormData = {
   id: string;
@@ -41,7 +41,7 @@ const Signup = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const savedData = await getAllUsers();
+        const savedData = await findUsers();
         console.log("savedData", savedData);
       } catch (error) {
         console.error('Failed to fetch users:', error);

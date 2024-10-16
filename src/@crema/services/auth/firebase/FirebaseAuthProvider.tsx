@@ -75,14 +75,14 @@ const FirebaseAuthProvider: React.FC<FirebaseAuthProviderProps> = ({
   
     const getAuthUser = auth.onAuthStateChanged(
       (user) => {
-        // Check if authToken exists and is valid
-        const authToken = user?.getIdToken(); // Assuming this method retrieves the token
-        console.log("Authenticated User:", user, "Auth Token:", authToken);
+        // Check if idToken exists and is valid
+        const idToken = user?.getIdToken(); // Assuming this method retrieves the token
+        console.log("Authenticated User:", user, "Auth Token:", idToken);
   
-        if (authToken) {
+        if (idToken) {
           setFirebaseData({
             user: user as AuthUserType,
-            isAuthenticated: true,  // User is valid if authToken exists
+            isAuthenticated: true,  // User is valid if idToken exists
             isLoading: false,
           });
         } else {
