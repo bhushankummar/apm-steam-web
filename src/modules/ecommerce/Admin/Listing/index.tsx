@@ -223,7 +223,7 @@ const ProductListing = () => {
     firstName: "First Name",
     lastName: "Last Name",
     email: "Email",
-    createdAt: "Date Added",
+    // createdAt: "Date Added",
     isActive: "Status",
   };
 
