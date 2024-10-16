@@ -15,7 +15,7 @@ import {
 } from "./index.styled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser, getAllUsers } from "@crema/services/common/commonService";
+import { createUser, findUsers } from "@crema/services/common/commonService";
 import axios from "@crema/services/axios";
 
 type FormData = {

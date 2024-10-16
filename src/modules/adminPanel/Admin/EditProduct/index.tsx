@@ -149,7 +149,7 @@ const ProductEditPage = () => {
               >
                 <Radio.Group>
                   <Radio value={true}>Active</Radio>
-                  <Radio value={false}>Inactive</Radio>
+                  <Radio value={false}>InActive</Radio>
                 </Radio.Group>
               </Form.Item>
 

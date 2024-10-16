@@ -7,6 +7,7 @@ import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
 import axios from "@crema/services/axios";
+import { findUsers } from "@crema/services/common/commonService";
 
 const { Option } = Select;
 
@@ -70,62 +71,66 @@ const ProductListing = () => {
   
   const applyFilters = (data: any[]) => {
     let newFilteredData = [...data];
-
+  
     const matchesStatus = filterData.status
       ? (item: any) => item.status === filterData.status
       : () => true;
-
+  
     const matchesProperty = (item: any) => {
-      if (
-        filterData.property &&
-        filterData.operator &&
-        filterData.filterValue
-      ) {
+      if (filterData.property && filterData.operator && filterData.filterValue) {
         const value = item[filterData.property];
         const filterValue = filterData.filterValue.toLowerCase();
         const itemValue = value ? value.toString().toLowerCase() : "";
-
-        switch (filterData.operator) {
-          case "equal":
-            return itemValue === filterValue;
-          case "greater":
-            if (filterData.property === "createdAt") {
-              return (
-                new Date(value).getTime() >
-                new Date(filterData.filterValue).getTime()
-              );
-            }
-            return itemValue > filterValue;
-          case "less":
-            if (filterData.property === "createdAt") {
-              return (
-                new Date(value).getTime() <
-                new Date(filterData.filterValue).getTime()
-              );
-            }
-            return itemValue < filterValue;
-          default:
-            return true;
+  
+        if (filterData.property === "createdAt") {
+          // Convert filterValue (date in MM/DD/YYYY format) to Unix timestamp
+          const filterUnixTimestamp = new Date(filterData.filterValue).getTime() / 1000; // in seconds
+          const itemUnixTimestamp = new Date(value).getTime() / 1000; // in seconds
+  
+          switch (filterData.operator) {
+            case "equal":
+              return itemUnixTimestamp === filterUnixTimestamp;
+            case "greater":
+              return itemUnixTimestamp > filterUnixTimestamp;
+            case "less":
+              return itemUnixTimestamp < filterUnixTimestamp;
+            default:
+              return true;
+          }
+        } else {
+          // For other properties (non-date), continue with the string comparison
+          switch (filterData.operator) {
+            case "equal":
+              return itemValue === filterValue;
+            case "greater":
+              return itemValue > filterValue;
+            case "less":
+              return itemValue < filterValue;
+            default:
+              return true;
+          }
         }
       }
       return true;
     };
-
+  
     newFilteredData = newFilteredData.filter(
       (item) => matchesStatus(item) && matchesProperty(item)
     );
-
+  
     // Paginate the filtered data
     const startIndex = page * pageSize;
     const endIndex = startIndex + pageSize;
     const paginatedData = newFilteredData.slice(startIndex, endIndex);
-
+  
     setFilteredData(paginatedData);
-    setTotalCount(newFilteredData.length); // Update total count for pagination
+    setTotalCount(newFilteredData.length);
   };
+  
 
   const handleApplyFilter = () => {
-    setPage(0); 
+    applyFilters(productList);
+    setPage(0);
   };
 
   const handleCancelFilter = () => {
@@ -135,14 +140,16 @@ const ProductListing = () => {
       operator: null,
       filterValue: "",
     });
-    setPage(0); // Reset to first page
+    setFilteredData(productList);
+    setTotalCount(productList.length);
+    setPage(0);
   };
 
   const onChangePage = (newPage: number) => {
     setPage(newPage);
+    applyFilters(productList);
   };
 
-  // Mapping for properties
   const propertyMapping: Record<string, string> = {
     firstName: "First Name",
     lastName: "Last Name",
@@ -151,7 +158,7 @@ const ProductListing = () => {
     status: "Status",
   };
 
-  const properties = Object.keys(propertyMapping); // Use the keys for filtering
+  const properties = Object.keys(propertyMapping);
 
   const handleAddClient = () => {
     navigate("/apps/admin/add-products");
@@ -161,7 +168,7 @@ const ProductListing = () => {
 
   return (
     <>
-      <StyledTitle5 style={{textAlign:'center',color:'#0076CE',fontSize:20}}>
+      <StyledTitle5 style={{ textAlign: "center", color: "#0076CE", fontSize: 20 }}>
         {messages["sidebar.ecommerceAdmin.agentListing"] as string}
       </StyledTitle5>
       <AppRowContainer>
