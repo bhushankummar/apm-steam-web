@@ -21,6 +21,7 @@ const ErrorLogInformation = React.lazy(
   () => import("../../../modules/ecommerce/Admin/errorLogTable")
 );
 
+const DeleteProduct = React.lazy(() => import("../../../modules/ecommerce/Admin/DeleteProduct"));
 
 export const ecommerceConfig = [
   {
@@ -43,6 +44,11 @@ export const ecommerceConfig = [
     permittedRole: RoutePermittedRole.User,
     path: "/apps/admin/edit-products/:id",
     element: <EditProduct />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: "/apps/admin/delete-products/:id",
+    element: <DeleteProduct />,
   },
 
   {

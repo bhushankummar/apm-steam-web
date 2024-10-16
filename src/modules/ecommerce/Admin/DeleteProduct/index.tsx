@@ -1,101 +1,88 @@
-import { useEffect, useState } from "react";
-import AppLoader from "@crema/components/AppLoader";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-import { StyledListingStatus } from "../index.styled";
-import { Typography } from "antd";
-import { ellipsisLines } from "@crema/helpers/StringHelper";
-import { ColumnsType } from "antd/es/table";
-import { StyledOrderTable } from "./index,styled";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Card, Button, notification, Row, Col } from "antd";
+import { deleteUser } from "../../../../@crema/services/common/commonService"; // Assuming you have this function
+import logo from "../../../../assets/images/apmLogo.png"; // Import logo from the assets folder
 
-
-type FormData = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  createdAt: string;
-};
-
-const getColumns = (): ColumnsType<FormData> => [
-  {
-    title: "Full Name",
-    key: "fullName",
-    render: (record: any) => (
-      <span>{`${record.firstName} ${record.lastName}`}</span>
-    ),
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-    render: (email: string) => (
-      <Typography.Link style={{ display: "flex", alignItems: "center" }}>
-        {ellipsisLines(email)}
-      </Typography.Link>
-    ),
-  },
-  {
-    title: "Created At",
-    dataIndex: "createdAt",
-    key: "createdAt",
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-    render: (status) => (
-      <StyledListingStatus
-        style={{
-          color: status === "Active" ? "#43C888" : "#F84E4E",
-          backgroundColor: status === "Active" ? "#43C88844" : "#F84E4E44",
-          fontWeight: status === "InActive" ? 'bold' : 'normal',
-        }}
-      >
-        {status === "Active" ? "Active" : "InActive"}
-      </StyledListingStatus>
-    ),
-  },
-];
-
-const ProductArchivedPage = () => {
-  const [archivedProducts, setArchivedProducts] = useState<FormData[]>([]);
-  const [loading, setLoading] = useState(true);
+const DeleteComponent = () => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch archived product data from local storage
-    const storedData = localStorage.getItem("deletedAgents"); // Ensure this is the correct key
-    console.log("Fetching Archived Technician data...", storedData); // Console log for debugging
-
-    if (storedData) {
-      try {
-        const products: FormData[] = JSON.parse(storedData);
-        console.log("Archived Technician data retrieved:", products); // Log the retrieved data
-        setArchivedProducts(products);
-      } catch (error) {
-        console.error("Error parsing stored data:", error); // Log any parsing errors
-      }
-    } else {
-      console.warn("No Archived Technician data found in local storage."); // Warn if no data is found
+    if (!id) {
+      notification.error({
+        message: "Error",
+        description: "User ID is missing from the URL.",
+      });
+      navigate(`/apps/admin/technician-listing`);
     }
-    setLoading(false);
-  }, []);
+  }, [id, navigate]);
 
-  if (loading) {
-    return <AppLoader />; // Show loader while fetching data
-  }
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      const response = await deleteUser(id as string);
+
+      if (response.data) {
+        notification.success({
+          message: "Success",
+          description: "Technician deleted successfully.",
+        });
+      }
+
+      navigate(`/apps/admin/technician-listing`);
+    } catch (error) {
+      console.error("Error deleting technician:", error);
+
+      notification.error({
+        message: "Error",
+        description: error.response?.data?.message || "Failed to delete technician.",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
-    <>
-      <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Archived Products</h2>
-      <StyledOrderTable
-        hoverColor
-        data={archivedProducts}
-        columns={getColumns()} // No need to pass `navigate` here
-        scroll={{ x: "auto" }}
-      />
-    </>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <Card
+        title={
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src={logo} alt="Company Logo" style={{ width: "50px", marginRight: "10px" }} />
+            <span>Delete Technician</span>
+          </div>
+        }
+        bordered={false}
+        style={{ width: 500, padding: "40px", textAlign: 'center' }} // Increased width and padding
+      >
+        <p style={{ fontSize: "18px", marginBottom: "20px" }}>
+          Are you sure you want to delete this technician? This action cannot be undone.
+        </p>
+        <Row justify="center" gutter={16}>
+          <Col span={11}>
+            <Button
+              type="primary"
+              danger
+              loading={isDeleting}
+              onClick={() => handleDelete()}
+              style={{ width: "100%", fontSize: "18px" }} // Full width for better alignment
+            >
+              Yes, Delete
+            </Button>
+          </Col>
+          <Col span={11}>
+            <Button
+              onClick={() => navigate(`/apps/admin/technician-listing`)}
+              style={{ width: "100%", fontSize: "18px" }} // Full width for better alignment
+            >
+              Cancel
+            </Button>
+          </Col>
+        </Row>
+      </Card>
+    </div>
   );
 };
 
-export default ProductArchivedPage;
+export default DeleteComponent;

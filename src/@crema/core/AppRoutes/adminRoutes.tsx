@@ -29,7 +29,7 @@ export const adminConfig = [
   },
   {
     path: "/apps/admin/delete-products/:id",
-    element: <DeleteProduct />, // Delete Product Page (with dynamic parameter `id`)
+    element: <DeleteProduct />, // Edit Product Page (with dynamic parameter `id`)
   },
   {
     path: "/apps/admin/logs",
