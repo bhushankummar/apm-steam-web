@@ -33,7 +33,7 @@ services:
         max_attempts: 3
         window: 120s
     ports:
-      - 3001:80
+      - 80:80
       - 443:443
     labels:
       - "apm-steam-web-dev-apps"
