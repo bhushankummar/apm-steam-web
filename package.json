@@ -9,7 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "release": "release-it",
-    "deploy": "npm run build && sudo cp -r dist/* /usr/share/nginx/html/"
+    "deploy": "npm run build && sudo cp -r dist/* /usr/share/nginx/html/",
+    "deploy:dev": "npm run build && docker-compose -f ./docker/docker-compose-development.yml up --build -d"
   },
   "dependencies": {
     "@ant-design/colors": "7.0.0",
