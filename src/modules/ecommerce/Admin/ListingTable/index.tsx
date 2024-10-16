@@ -85,7 +85,7 @@ const getColumns = (): ColumnsType<FormData> => [
               <span style={{ marginRight: 5 }}>
                 <CloseCircleOutlined />
               </span>
-              Inactive
+              InActive
             </>
           )}
         </StyledListingStatus>

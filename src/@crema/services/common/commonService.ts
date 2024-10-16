@@ -88,12 +88,22 @@ export const deleteUser = async (userId: string): Promise<ApiResponse<null>> => 
   }
 };
 
-export const findUsers = async (searchString?: string, currentPage: number = 1, pageSize: number = 10): Promise<any> => {
+export const findUsers = async (
+  searchString?: string,
+  currentPage: number = 1,
+  pageSize: number = 10,
+  filter?: {
+    columnName: string;
+    value: string;
+    operator: string;
+  }
+): Promise<any> => {
   try {
     const payload = {
       searchString,
       currentPage,
       pageSize,
+      filter, // add the filter object here
     };
 
     const response: AxiosResponse<ApiResponse<User[]>> = await apiClient.post('/api/users/find', payload);
@@ -103,6 +113,7 @@ export const findUsers = async (searchString?: string, currentPage: number = 1, 
     throw error;
   }
 };
+
 
 export const getUserById = async (id: string): Promise<ApiResponse<User>> => {
   try {
