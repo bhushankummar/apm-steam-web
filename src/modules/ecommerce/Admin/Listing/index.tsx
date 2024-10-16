@@ -18,7 +18,6 @@ const ProductListing = () => {
   const [filterData, setFilterData] = useState({
     isActive: null as "active" | "inactive" | null,
     property: null as string | null,
-    operator: null as string | null,
     filterValue: "",
     operator: 'equals',
   });
@@ -183,16 +182,7 @@ const ProductListing = () => {
     }
   };
   
-  const formatDate = (dateString: string): string => {
-    const timestamp = parseInt(dateString, 10);
-    
-    if (!isNaN(timestamp)) {
-      const formattedDate = moment.unix(timestamp).format("MM/DD/YYYY");
-      return formattedDate;
-    }
-    const formattedDate = moment(dateString).format("MM/DD/YYYY");
-    return formattedDate;
-  };
+  
   
   const parseDateToTimestamp = (dateString) => {
     const momentDate = moment(dateString, 'DD/MM/YYYY', true); 
@@ -328,7 +318,7 @@ const ProductListing = () => {
           <AppCard>
             <ProductTable filteredData={filteredData.map(user => ({
               ...user,
-              createdAt: formatDate(user.createdAt), // Format the date here
+              createdAt: user.createdAt 
           }))} />
             <div
               style={{
