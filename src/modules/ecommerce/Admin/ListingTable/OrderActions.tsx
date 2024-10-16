@@ -25,10 +25,11 @@ const OrderActions = ({ id }: Props) => {
         break;
       case "2":
         // Show confirmation dialog for deletion
-        Modal.confirm({
-          title: 'Are you sure you want to delete this agent?',
-          onOk: () => handleDelete(id),
-        });
+        // Modal.confirm({
+        //   title: 'Are you sure you want to Delete this Technician?',
+        //   onOk: () => handleDelete(id),
+        // });
+        navigate(`/apps/admin/delete-products/${id}`);
         break;
       default:
         break;
@@ -45,6 +46,7 @@ const OrderActions = ({ id }: Props) => {
         });
   
       }
+      navigate(`/apps/admin/technician-listing`);
     } catch (error) {
       console.error("Error deleting technician:", error);
   

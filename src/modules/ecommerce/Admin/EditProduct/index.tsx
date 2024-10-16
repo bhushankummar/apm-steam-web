@@ -3,6 +3,7 @@ import {  useNavigate, useParams } from "react-router-dom"; // Import useParams 
 import { Form, Input, Button, Radio, notification } from "antd";
 import { findOne, updateUser } from "@crema/services/common/commonService"; // Assuming findOne is imported
 import { StyledUserCard, StyledUserCardHeader, StyledUserCardLogo, StyledUserContainer, StyledUserPages } from "../AddEditProduct/index.styled";
+import companyLogo from "../../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
 
 const ProductEditPage = () => {
   const { id } = useParams<{ id: string }>(); // Get the ID from the URL
@@ -78,7 +79,7 @@ const ProductEditPage = () => {
         <StyledUserCard style={{ width: '600px', padding: '40px' }}> {/* Enhanced size and padding */}
           <StyledUserCardHeader>
             <StyledUserCardLogo>
-              <img src={"/assets/images/logo.png"} alt="crema" title="crema" />
+              <img src={companyLogo} alt="crema" title="crema" />
             </StyledUserCardLogo>
             <h3>Edit Technician</h3>
           </StyledUserCardHeader>

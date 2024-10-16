@@ -35,7 +35,7 @@ const AuthWrapper: React.FC<Props> = ({children}) => {
             <StyledAuthWelContent>
               <h2>Welcome to APM Steam!</h2>
               <p>
-              APM (Admin Panel Management) Steam App is an intuitive and efficient tool designed to streamline the management of administrative tasks for Steam-based platforms
+              APM (Admin Panel Management) Steam App is an intuitive and efficient tool designed to streamline the management of administrative tasks for APM Steam platforms
               </p>
             </StyledAuthWelContent>
           </StyledAuthWellAction>

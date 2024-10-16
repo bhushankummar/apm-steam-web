@@ -1,12 +1,12 @@
 version: "3.7"
 
 services:
-  apm-steam-web-dev:
+  apm-steam-web-prod:
     build:
       context: ../
-      dockerfile: Dockerfile-dev
+      dockerfile: Dockerfile-prod
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
     healthcheck:
       test: curl --fail http://localhost || exit 1
       interval: 10s
@@ -35,4 +35,4 @@ services:
     ports:
       - 8081:80
     labels:
-      - "apm-steam-web-dev-apps"
+      - "apm-steam-web-prod-apps"

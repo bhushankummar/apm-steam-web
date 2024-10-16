@@ -8,6 +8,10 @@ import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
 import axios from "@crema/services/axios";
 import moment from "moment";
+import { findUsers } from "@crema/services/common/commonService";
+import { StyledUserCardLogo } from "../AddEditProduct/index.styled";
+import companyLogo from "../../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
+import { StyledContainer } from "@crema/components/AppLayout/HorDefault/index.styled";
 
 const { Option } = Select;
 
@@ -49,9 +53,13 @@ const ProductListing = () => {
               operator: filterData.operator,    
             }
           };
+        } else {
+          console.error(
+            "Failed to fetch users: savedData or savedData.users is undefined"
+          );
         }
   
-        const response = await axios.post('http://localhost:3000/api/users/find', payload);
+        const response = await axios.post(`${import.meta.env.VITE_API_URL as string}/api/users/find`, payload);
   
         setProductList(response.data.users);
         setFilteredData(response.data.users);
@@ -81,16 +89,27 @@ const ProductListing = () => {
   // : () => true;
 
   
+
+    const matchesStatus = filterData.status
+      ? (item: any) => item.status === filterData.status
+      : () => true;
+
     const matchesProperty = (item: any) => {
-      if (filterData.property && filterData.operator && filterData.filterValue) {
+      if (
+        filterData.property &&
+        filterData.operator &&
+        filterData.filterValue
+      ) {
         const value = item[filterData.property];
         const filterValue = filterData.filterValue.toLowerCase();
-        let itemValue = value ? value.toString().toLowerCase() : "";
-  
+        const itemValue = value ? value.toString().toLowerCase() : "";
+
         if (filterData.property === "createdAt") {
-          const filterTimestamp = parseDateToTimestamp(filterData.filterValue);
-          itemValue = value; // Use the timestamp directly for comparison
-  
+          // Convert filterValue (date in MM/DD/YYYY format) to Unix timestamp
+          const filterUnixTimestamp =
+            new Date(filterData.filterValue).getTime() / 1000; // in seconds
+          const itemUnixTimestamp = new Date(value).getTime() / 1000; // in seconds
+
           switch (filterData.operator) {
             case "equal":
               return parseInt(itemValue) === filterTimestamp;
@@ -116,20 +135,19 @@ const ProductListing = () => {
       }
       return true;
     };
-  
+
     newFilteredData = newFilteredData.filter(
       (item) => matchesStatus(item) && matchesProperty(item)
     );
-  
+
     // Paginate the filtered data
     const startIndex = page * pageSize;
     const endIndex = startIndex + pageSize;
     const paginatedData = newFilteredData.slice(startIndex, endIndex);
-  
+
     setFilteredData(paginatedData);
     setTotalCount(newFilteredData.length);
   };
-  
 
   const handleApplyFilter = async () => {
     setLoading(true);
@@ -229,9 +247,20 @@ const ProductListing = () => {
 
   return (
     <>
-      <StyledTitle5 style={{ textAlign: "center", color: "#0076CE", fontSize: 20 }}>
-        {messages["sidebar.ecommerceAdmin.agentListing"] as string}
-      </StyledTitle5>
+  <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+  <div style={{ marginRight: "10px" }}>
+    <img 
+      src={companyLogo} 
+      alt="crema" 
+      title="crema" 
+      style={{ width: "60px", height: "20px",marginBottom:"10px" }} // Adjust the size here
+    />
+  </div>
+  <StyledTitle5 style={{ color: "#0076CE", fontSize: 20 }}>
+    {messages["sidebar.ecommerceAdmin.agentListing"] as string}
+  </StyledTitle5>
+</div>
+
       <AppRowContainer>
         <Col xs={24} lg={24} style={{ position: "relative", width: "100%" }}>
           <div style={{ flexGrow: 1 }}>

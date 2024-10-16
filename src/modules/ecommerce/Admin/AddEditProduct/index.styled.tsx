@@ -88,7 +88,9 @@ export const StyledUserCardHeader = styled.div`
 `;
 
 export const StyledUserCardLogo = styled.div`
-  margin-right: 8px;
+  margin-right: 8px;  
+  margin-bottom: 8px;
+
 
   [dir="rtl"] & {
     margin-right: 0;
@@ -454,3 +456,12 @@ export const StyledUserFormImage = styled.img`
 `;
 
 
+const StyledContainer = styled.div`
+  display: flex;
+  align-items: center; /* Align items vertically centered */
+  justify-content: center; /* Center them horizontally */
+  
+  img {
+    margin-right: 10px; /* Add some spacing between the logo and the title */
+  }
+`;

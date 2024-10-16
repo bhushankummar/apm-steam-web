@@ -16,7 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUser, findUsers } from "@crema/services/common/commonService";
-import axios from "@crema/services/axios";
+import companyLogo from "../../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
 
 type FormData = {
   id: string;
@@ -96,7 +96,7 @@ const Signup = () => {
           <StyledUserCard>
             <StyledUserCardHeader>
               <StyledUserCardLogo>
-                <img src={"/assets/images/logo.png"} alt="crema" title="crema" />
+                <img src={companyLogo} alt="crema" title="crema" />
               </StyledUserCardLogo>
               <h3>
                 <IntlMessages id="common.addAgent" />
