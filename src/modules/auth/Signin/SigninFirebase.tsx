@@ -33,7 +33,6 @@ const SignInAzure = () => {
           message: "Login Successful!",
           description: "Welcome back! You now have access to the admin dashboard.",
           duration: 5,  // Optional: duration in seconds (default: 4.5)
-          icon: <CheckCircleOutlined style={{ color: '#52c41a' }} />, // Optional: a success icon (you can use your preferred icon)
         });
         
         const idToken = response.accessToken; // Use the Azure access token
