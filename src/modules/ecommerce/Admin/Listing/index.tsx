@@ -58,49 +58,62 @@ const ProductListing = () => {
 
   const applyFilters = (data: any[]) => {
     let newFilteredData = [...data];
-
+  
     const matchesStatus = filterData.status
       ? (item: any) => item.status === filterData.status
       : () => true;
-
+  
     const matchesProperty = (item: any) => {
       if (filterData.property && filterData.operator && filterData.filterValue) {
         const value = item[filterData.property];
         const filterValue = filterData.filterValue.toLowerCase();
         const itemValue = value ? value.toString().toLowerCase() : "";
-
-        switch (filterData.operator) {
-          case "equal":
-            return itemValue === filterValue;
-          case "greater":
-            if (filterData.property === "createdAt") {
-              return new Date(value).getTime() > new Date(filterData.filterValue).getTime();
-            }
-            return itemValue > filterValue;
-          case "less":
-            if (filterData.property === "createdAt") {
-              return new Date(value).getTime() < new Date(filterData.filterValue).getTime();
-            }
-            return itemValue < filterValue;
-          default:
-            return true;
+  
+        if (filterData.property === "createdAt") {
+          // Convert filterValue (date in MM/DD/YYYY format) to Unix timestamp
+          const filterUnixTimestamp = new Date(filterData.filterValue).getTime() / 1000; // in seconds
+          const itemUnixTimestamp = new Date(value).getTime() / 1000; // in seconds
+  
+          switch (filterData.operator) {
+            case "equal":
+              return itemUnixTimestamp === filterUnixTimestamp;
+            case "greater":
+              return itemUnixTimestamp > filterUnixTimestamp;
+            case "less":
+              return itemUnixTimestamp < filterUnixTimestamp;
+            default:
+              return true;
+          }
+        } else {
+          // For other properties (non-date), continue with the string comparison
+          switch (filterData.operator) {
+            case "equal":
+              return itemValue === filterValue;
+            case "greater":
+              return itemValue > filterValue;
+            case "less":
+              return itemValue < filterValue;
+            default:
+              return true;
+          }
         }
       }
       return true;
     };
-
+  
     newFilteredData = newFilteredData.filter(
       (item) => matchesStatus(item) && matchesProperty(item)
     );
-
+  
     // Paginate the filtered data
     const startIndex = page * pageSize;
     const endIndex = startIndex + pageSize;
     const paginatedData = newFilteredData.slice(startIndex, endIndex);
-
+  
     setFilteredData(paginatedData);
     setTotalCount(newFilteredData.length);
   };
+  
 
   const handleApplyFilter = () => {
     applyFilters(productList);

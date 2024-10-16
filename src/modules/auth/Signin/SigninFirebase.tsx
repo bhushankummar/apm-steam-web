@@ -12,6 +12,7 @@ import {
 } from "./index.styled";
 import companyLogo from "../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
 import { verifyUser } from "@crema/services/common/commonService";
+import { CheckCircleOutlined } from "@ant-design/icons";
 
 const SignInAzure = () => {
   const navigate = useNavigate();
@@ -24,14 +25,21 @@ const SignInAzure = () => {
       const response = await instance.loginPopup(loginRequest); // Azure login
       console.log("Azure login successful:", response);
 
-      const userRole = await verifyUser("saloni.kale.1117@gmail.com");
+      const userRole = await verifyUser(response.account.username);
       console.log(userRole.success, "saloni");
 
-      if (userRole.success ) {
+      if (userRole.success && userRole.userDetail.role === 'ADMIN') {
+        notification.success({
+          message: "Login Successful!",
+          description: "Welcome back! You now have access to the admin dashboard.",
+          duration: 5,  // Optional: duration in seconds (default: 4.5)
+          icon: <CheckCircleOutlined style={{ color: '#52c41a' }} />, // Optional: a success icon (you can use your preferred icon)
+        });
+        
         const idToken = response.accessToken; // Use the Azure access token
         sessionStorage.setItem("idToken", idToken); // Save token to session storage
 
-        await logInWithEmailAndPassword({ email: "", password: "" }); // Firebase login with empty credentials
+        await logInWithEmailAndPassword({ email: response.account.username, password: "" }); // Firebase login with empty credentials
 
         navigate("/apps/admin/technician-listing"); // Redirect on successful login
       } else {

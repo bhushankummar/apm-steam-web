@@ -108,7 +108,7 @@ const ProductEditPage = () => {
             >
               <Radio.Group style={{ width: '100%', padding: '10px' }}>
                 <Radio value={true}>Active</Radio>
-                <Radio value={false}>Inactive</Radio>
+                <Radio value={false}>InActive</Radio>
               </Radio.Group>
             </Form.Item>
 
