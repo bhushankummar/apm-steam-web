@@ -170,7 +170,7 @@ const ProductListing = () => {
       src={companyLogo} 
       alt="crema" 
       title="crema" 
-      style={{ width: "80px", height: "30px",marginBottom:"10px" }} // Adjust the size here
+      style={{ width: "60px", height: "20px",marginBottom:"10px" }} // Adjust the size here
     />
   </div>
   <StyledTitle5 style={{ color: "#0076CE", fontSize: 20 }}>
