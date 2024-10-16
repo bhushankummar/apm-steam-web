@@ -4,7 +4,7 @@ services:
   apm-steam-web-dev:
     build:
       context: ../
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-dev
     environment:
       NODE_ENV: development
     healthcheck:
