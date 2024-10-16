@@ -8,10 +8,8 @@ import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
 import axios from "@crema/services/axios";
 import moment from "moment";
+import companyLogo from "../../../../assets/images/apmLogo.png"; 
 import { findUsers } from "@crema/services/common/commonService";
-import { StyledUserCardLogo } from "../AddEditProduct/index.styled";
-import companyLogo from "../../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
-import { StyledContainer } from "@crema/components/AppLayout/HorDefault/index.styled";
 
 const { Option } = Select;
 
@@ -80,19 +78,19 @@ const ProductListing = () => {
   const applyFilters = (data: any[]) => {
     let newFilteredData = [...data];
   
-  //   const matchesStatus = filterData.isActive
-  // ? (item: any) => {
-  //     if (filterData.isActive === "active") return item.isActive = true;
-  //     if (filterData.isActive === "inactive") return item.isActive = false;
-  //     return true;
-  //   }
-  // : () => true;
+    const matchesStatus = filterData.isActive
+  ? (item: any) => {
+      if (filterData.isActive === "active") return item.isActive = true;
+      if (filterData.isActive === "inactive") return item.isActive = false;
+      return true;
+    }
+  : () => true;
 
   
 
-    const matchesStatus = filterData.status
-      ? (item: any) => item.status === filterData.status
-      : () => true;
+    // const matchesStatus = filterData.status
+    //   ? (item: any) => item.status === filterData.status
+    //   : () => true;
 
     const matchesProperty = (item: any) => {
       if (
@@ -108,15 +106,14 @@ const ProductListing = () => {
           // Convert filterValue (date in MM/DD/YYYY format) to Unix timestamp
           const filterUnixTimestamp =
             new Date(filterData.filterValue).getTime() / 1000; // in seconds
-          const itemUnixTimestamp = new Date(value).getTime() / 1000; // in seconds
 
           switch (filterData.operator) {
             case "equal":
-              return parseInt(itemValue) === filterTimestamp;
+              return parseInt(itemValue) === filterUnixTimestamp;
             case "greater":
-              return parseInt(itemValue) > filterTimestamp;
+              return parseInt(itemValue) > filterUnixTimestamp;
             case "less":
-              return parseInt(itemValue) < filterTimestamp;
+              return parseInt(itemValue) < filterUnixTimestamp;
             default:
               return true;
           }
@@ -152,21 +149,16 @@ const ProductListing = () => {
   const handleApplyFilter = async () => {
     setLoading(true);
     setPage(0); // Reset to the first page
-
+  
     try {
-      let payload = {
-        currentPage: 1,
-        pageSize: pageSize,
-      };
-
+      let filter;
+      let searchString;
+  
       if (filterData.property === "isActive") {
-        payload = {
-          ...payload,
-          filter: {
-            columnName: "isActive",
-            value: filterData.filterValue.toLowerCase() === "active" ? "true" : "false",
-            operator: "equals",
-          }
+        filter = {
+          columnName: "isActive",
+          value: filterData.filterValue.toLowerCase() === "active" ? "true" : "false",
+          operator: "equals",
         };
       } else if (filterData.property && filterData.operator && filterData.filterValue) {
         let filterValue = filterData.filterValue;
@@ -178,23 +170,21 @@ const ProductListing = () => {
             return;
           }
         }
-
-        payload = {
-          ...payload,
-          filter: {
-            columnName: filterData.property,
-            value: filterValue,
-            operator: filterData.operator,
-          }
+  
+        filter = {
+          columnName: filterData.property,
+          value: filterValue,
+          operator: filterData.operator,
         };
       }
-
-      const response = await axios.post('http://localhost:3000/api/users/find', payload);
-      // setProductList(response.data.users);
-      setFilteredData(response.data.users);
-      setTotalCount(response.data.total);
+  
+      // Now call findUsers and pass the filter object
+      const response = await findUsers(searchString, 1, pageSize, filter);
+      
+      setFilteredData(response.users);
+      setTotalCount(response.total);
     } catch (error) {
-      console.error('Failed to fetch users:', error);
+      console.error("Failed to fetch users:", error);
     } finally {
       setLoading(false);
     }
@@ -202,7 +192,7 @@ const ProductListing = () => {
   
   
   
-  const parseDateToTimestamp = (dateString) => {
+  const parseDateToTimestamp = (dateString:string) => {
     const momentDate = moment(dateString, 'DD/MM/YYYY', true); 
   
     if (!momentDate.isValid()) {
