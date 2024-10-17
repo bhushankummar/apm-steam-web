@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import AppRowContainer from "@crema/components/AppRowContainer";
 import AppCard from "@crema/components/AppCard";
-import { Col, Button, Select, Input } from "antd";
+import { Col, Button, Select, Input, notification } from "antd";
 import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../ListingTable";
@@ -142,8 +142,7 @@ const ProductListing = () => {
     setFilteredData(paginatedData);
     setTotalCount(newFilteredData.length);
   };
-
-
+  
   const handleApplyFilter = async () => {
     setLoading(true);
     setPage(0);
@@ -151,7 +150,7 @@ const ProductListing = () => {
     try {
       let filter;
       let searchString;
-  
+      
       // Define filter based on filterData
       if (filterData.property === "isActive") {
         filter = {
@@ -163,33 +162,55 @@ const ProductListing = () => {
         let filterValue = filterData.filterValue;
   
         if (filterData.property === "createdAt") {
-          filterValue = parseDateToTimestamp(filterData.filterValue).toString();
-          if (!filterValue) {
-            alert("Please enter a valid date in DD/MM/YYYY format");
+          console.log(filterData.operator, "Date Added (createdAt) filter value:", filterData.filterValue);
+  
+          // Ensure the value is a string and in the format DD/MM/YYYY
+          const dateString = filterData.filterValue;
+          console.log("Date string:", dateString); // Log to see the exact value
+  
+          // Convert string to moment object, ensuring the format is 'DD/MM/YYYY'
+          const dateMoment = moment(dateString, 'DD/MM/YYYY', true); // The third parameter is strict mode
+  
+          if (dateMoment.isValid()) {
+            const unixTimestamp = dateMoment.unix();
+            console.log("Unix Timestamp:", unixTimestamp);
+  
+            // Set filter for 'createdAt' as Unix timestamp
+            filter = {
+              columnName: filterData.property,
+              value: unixTimestamp.toString(),
+              operator: filterData.operator,
+            };
+          } else {
+            console.error("Invalid date format, unable to parse:", dateString);
+            notification.error({
+              message: "Date format is wrong",
+              description: "Use format DD/MM/YYYY",
+            });
             return;
           }
+        } else {
+          // For other properties, just use the provided filter value
+          filter = {
+            columnName: filterData.property,
+            value: filterValue,
+            operator: filterData.operator,
+          };
         }
-  
-        filter = {
-          columnName: filterData.property,
-          value: filterValue,
-          operator: filterData.operator,
-        };
       }
   
       // Prepare the config for GET request
       const payload = {
-    
-          searchString,
-          currentPage: 1,
-          pageSize,
-          filter, 
-        
+        searchString,
+        currentPage: 1,
+        pageSize,
+        filter,
       };
   
       // Make the GET request using axiosService
       const response = await axiosService.post<FindUsersResponse>(API_ENDPOINTS.USERS.FIND, payload);
-
+      console.log(response,' filter response');
+      
       // Update state with filtered data and total count
       setFilteredData(response.data.users);  
       setTotalCount(response.data.total);    
@@ -198,19 +219,6 @@ const ProductListing = () => {
     } finally {
       setLoading(false);
     }
-  };
-  
-  
-  
-  
-  const parseDateToTimestamp = (dateString:string) => {
-    const momentDate = moment(dateString, 'DD/MM/YYYY', true); 
-  
-    if (!momentDate.isValid()) {
-      throw new Error("Invalid date format - please use DD/MM/YYYY");
-    }
-  
-    return momentDate.unix(); 
   };
 
   const handleCancelFilter = () => {
@@ -234,7 +242,7 @@ const ProductListing = () => {
     firstName: "First Name",
     lastName: "Last Name",
     email: "Email",
-    // createdAt: "Date Added",
+    createdAt: "Date Added",
     isActive: "Status",
   };
 
