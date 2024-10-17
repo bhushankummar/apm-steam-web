@@ -10,7 +10,7 @@ import axios from "@crema/services/axios";
 import moment from "moment";
 import companyLogo from "../../../../assets/images/apmLogo.png"; 
 import API_ENDPOINTS from "../../../../constant/apiEndpoints";
-import axiosService from "@crema/services/axios/axiosService";
+import axiosService from "../../../../@crema/services/axios/AxiosService";
 import { FindUsersResponse } from "../../../../constant/interfaces";
 
 const { Option } = Select;
