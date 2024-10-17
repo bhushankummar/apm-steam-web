@@ -13,49 +13,58 @@ import {
 import companyLogo from "../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
 import { verifyUser } from "@crema/services/common/commonService";
 import { CheckCircleOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
+
+
 
 const SignInAzure = () => {
+
   const navigate = useNavigate();
   const { logInWithEmailAndPassword } = useAuthMethod(); // Firebase login method
   const { instance } = useMsal(); // MSAL instance for Azure login
 
   // Handle Azure login
-  const handleAzureLogin = async () => {
-    try {
-      const response = await instance.loginPopup(loginRequest); // Azure login
-      console.log("Azure login successful:", response);
+// Handle Azure login
+const handleAzureLogin = async () => {
+  try {
+    const response = await instance.loginPopup({
+      ...loginRequest,
+      prompt: "login",  // Forces prompt for credentials
+    }); // Azure login
+    console.log("Azure login successful:", response);
 
-      const userRole = await verifyUser(response.account.username);
-      console.log(userRole.success, "saloni");
+    const userRole = await verifyUser(response.account.username);
+    console.log(userRole.success, "saloni");
 
-      if (userRole.success && userRole.userDetail.role === 'ADMIN') {
-        notification.success({
-          message: "Login Successful!",
-          description: "Welcome back! You now have access to the admin dashboard.",
-          duration: 5,  // Optional: duration in seconds (default: 4.5)
-        });
-        
-        const idToken = response.accessToken; // Use the Azure access token
-        sessionStorage.setItem("idToken", idToken); // Save token to session storage
+    if (userRole.success && userRole.userDetail.role === 'ADMIN') {
+      notification.success({
+        message: "Login Successful!",
+        description: "Welcome back! You now have access to the admin dashboard.",
+        duration: 5,  // Optional: duration in seconds (default: 4.5)
+      });
+      
+      const idToken = response.accessToken; // Use the Azure access token
+      sessionStorage.setItem("idToken", idToken); // Save token to session storage
 
-        await logInWithEmailAndPassword({ email: response.account.username, password: "" }); // Firebase login with empty credentials
+      await logInWithEmailAndPassword({ email: response.account.username, password: "" }); // Firebase login with empty credentials
 
-        navigate("/apps/admin/technician-listing"); // Redirect on successful login
-      } else {
-        // Display an error notification
-        notification.error({
-          message: "Access Denied",
-          description: "You do not have access to the admin dashboard.",
-        });
-      }
-    } catch (error) {
-      console.error("Azure login failed:", error);
+      navigate("/apps/admin/technician-listing"); // Redirect on successful login
+    } else {
+      // Display an error notification
       notification.error({
-        message: "Login Failed",
-        description: "Azure login failed. Please try again later.",
+        message: "Access Denied",
+        description: "You are not authorized to access this application.",
       });
     }
-  };
+  } catch (error) {
+    console.error("Azure login failed:", error);
+    notification.error({
+      message: "Login Failed",
+      description: "Azure login failed. Please try again later.",
+    });
+  }
+};
+
 
   return (
     <StyledSign>
