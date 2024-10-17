@@ -5,15 +5,15 @@ import { StyledOrderTable } from "../../Orders/index.styled";
 import { ellipsisLines } from "@crema/helpers/StringHelper";
 import type { ColumnsType } from "antd/es/table";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
-import moment from "moment"; // Importing moment for date formatting
+import moment from "moment"; 
 
 type FormData = {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
-  createdAt: string; // Assuming this property exists
-  isActive: boolean; // Assuming this property exists as a boolean
+  createdAt: string; 
+  isActive: boolean; 
 };
 
 // Helper function to format dates using moment
@@ -102,7 +102,7 @@ const getColumns = (): ColumnsType<FormData> => [
   },
 ];
 
-const ProductTable = ({ filteredData }: { filteredData: FormData[] }) => {
+const TechnicianTable = ({ filteredData }: { filteredData: FormData[] }) => {
   return (
     <StyledOrderTable
       hoverColor
@@ -119,4 +119,4 @@ const ProductTable = ({ filteredData }: { filteredData: FormData[] }) => {
   );
 };
 
-export default ProductTable;
+export default TechnicianTable;

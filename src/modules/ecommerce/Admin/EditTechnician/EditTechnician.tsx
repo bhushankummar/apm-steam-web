@@ -1,37 +1,35 @@
 import { useState, useEffect } from "react";
-import {  useNavigate, useParams } from "react-router-dom"; // Import useParams from react-router-dom
+import { useNavigate, useParams } from "react-router-dom";
 import { Form, Input, Button, Radio, notification } from "antd";
-import { findOne, updateUser } from "@crema/services/common/commonService"; // Assuming findOne is imported
+import { findOne, updateUser } from "@crema/services/common/commonService";
 import { StyledUserCard, StyledUserCardHeader, StyledUserCardLogo, StyledUserContainer, StyledUserPages } from "../AddEditProduct/index.styled";
-import companyLogo from "../../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
+import companyLogo from "../../../../assets/images/apmLogo.png"; 
 
-const ProductEditPage = () => {
-  const { id } = useParams<{ id: string }>(); // Get the ID from the URL
-  const [currentProduct, setCurrentProduct] = useState<any>(null); // Initialize with null to show loading
-  const [loading, setLoading] = useState(true); // Loading state to show a loading indicator
+const TechnicianEditPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const [currentTechnician, setCurrentTechnician] = useState<any>(null); 
+  const [loading, setLoading] = useState(true); 
   const navigate = useNavigate();
 
-  // Fetch the product data based on the id from the URL
-  const fetchProductById = async (id: string) => {
-    setLoading(true); // Set loading to true while fetching the data
+  const fetchTechnicianById = async (id: string) => {
+    setLoading(true); 
     try {
-      const fetchedProduct = await findOne(id); // Fetch product details by ID
-      setCurrentProduct(fetchedProduct); // Set the fetched data to state
+      const fetchedTechnician = await findOne(id); 
+      setCurrentTechnician(fetchedTechnician); 
     } catch (error) {
-      console.error("Error fetching product:", error);
+      console.error("Error fetching technician:", error);
       notification.error({
         message: "Error",
-        description: "Failed to load product data.",
+        description: "Failed to load technician data.",
       });
     } finally {
-      setLoading(false); // Set loading to false after fetching is done
+      setLoading(false); 
     }
   };
 
-  // Load the product data when the component mounts or when the id changes
   useEffect(() => {
     if (id) {
-      fetchProductById(id); // Fetch the product details on component mount
+      fetchTechnicianById(id); 
     }
   }, [id]);
 
@@ -39,13 +37,12 @@ const ProductEditPage = () => {
   const handleSave = async (values: any) => {
     try {
       if (!id) {
-        throw new Error("No product ID available for updating.");
+        throw new Error("No technician ID available for updating.");
       }
 
       // Exclude the email field from the payload since it's read-only
       const { email, ...updatedValues } = values;
 
-      // Call the API to update the product details based on the form values
       const response = await updateUser(id, updatedValues);
 
       // Directly use the response (not response.data), based on the response structure
@@ -55,24 +52,24 @@ const ProductEditPage = () => {
           description: `Technician was updated successfully!`,
         });
 
-        // Update local state with the updated values (bypass fetchProductById)
-        setCurrentProduct({ ...currentProduct, ...updatedValues, email: currentProduct.email });
+        // Update local state with the updated values (bypass fetchTechnicianById)
+        setCurrentTechnician({ ...currentTechnician, ...updatedValues, email: currentTechnician.email });
         navigate('/apps/admin/technician-listing');
 
       } else {
         throw new Error("Invalid response from the server.");
       }
     } catch (error) {
-      console.error("Error updating product:", error);
+      console.error("Error updating technician:", error);
       notification.error({
         message: "Error",
-        description: "Failed to update product data.",
+        description: "Failed to update technician data.",
       });
     }
   };
 
-  return loading || !currentProduct ? (
-    <div>Loading...</div> // Show a loading message while fetching product data
+  return loading || !currentTechnician ? (
+    <div>Loading...</div> 
   ) : (
     <StyledUserPages>
       <StyledUserContainer>
@@ -86,7 +83,7 @@ const ProductEditPage = () => {
 
           <Form
             name="editProduct"
-            initialValues={currentProduct} // Set the initial values here, including email
+            initialValues={currentTechnician} // Set the initial values here, including email
             onFinish={handleSave} // Call handleSave on form submission
           >
             <Form.Item
@@ -125,4 +122,4 @@ const ProductEditPage = () => {
   );
 };
 
-export default ProductEditPage;
+export default TechnicianEditPage;

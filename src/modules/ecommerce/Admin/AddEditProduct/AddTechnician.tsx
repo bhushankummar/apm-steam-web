@@ -1,6 +1,6 @@
 import IntlMessages from "@crema/helpers/IntlMessages";
 import AppAnimate from "@crema/components/AppAnimate";
-import { Form, Input, notification } from "antd"; // Import notification
+import { Form, Input, notification } from "antd"; 
 import { useIntl } from "react-intl";
 import AppPageMeta from "@crema/components/AppPageMeta";
 import { v4 as uuidv4 } from "uuid";
@@ -13,10 +13,10 @@ import {
   StyledUserFormBtn,
   StyledUserPages,
 } from "./index.styled";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser, findUsers } from "@crema/services/common/commonService";
-import companyLogo from "../../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
+import { createUser } from "@crema/services/common/commonService";
+import companyLogo from "../../../../assets/images/apmLogo.png";
 
 type FormData = {
   id: string;

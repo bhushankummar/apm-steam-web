@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, Button, notification, Row, Col } from "antd";
-import { deleteUser } from "../../../../@crema/services/common/commonService"; // Assuming you have this function
-import logo from "../../../../assets/images/apmLogo.png"; // Import logo from the assets folder
+import { deleteUser } from "../../../../@crema/services/common/commonService";
+import logo from "../../../../assets/images/apmLogo.png"; 
 
 const DeleteComponent = () => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -13,7 +13,7 @@ const DeleteComponent = () => {
     if (!id) {
       notification.error({
         message: "Error",
-        description: "User ID is missing from the URL.",
+        description: "Technician ID is missing from the URL.",
       });
       navigate(`/apps/admin/technician-listing`);
     }
@@ -54,7 +54,7 @@ const DeleteComponent = () => {
           </div>
         }
         bordered={false}
-        style={{ width: 500, padding: "40px", textAlign: 'center' }} // Increased width and padding
+        style={{ width: 500, padding: "40px", textAlign: 'center' }}
       >
         <p style={{ fontSize: "18px", marginBottom: "20px" }}>
           Are you sure you want to delete this technician? This action cannot be undone.
@@ -66,7 +66,7 @@ const DeleteComponent = () => {
               danger
               loading={isDeleting}
               onClick={() => handleDelete()}
-              style={{ width: "100%", fontSize: "18px" }} // Full width for better alignment
+              style={{ width: "100%", fontSize: "18px" }} 
             >
               Yes, Delete
             </Button>
@@ -74,7 +74,7 @@ const DeleteComponent = () => {
           <Col span={11}>
             <Button
               onClick={() => navigate(`/apps/admin/technician-listing`)}
-              style={{ width: "100%", fontSize: "18px" }} // Full width for better alignment
+              style={{ width: "100%", fontSize: "18px" }} 
             >
               Cancel
             </Button>

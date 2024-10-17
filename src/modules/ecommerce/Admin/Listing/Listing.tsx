@@ -5,7 +5,7 @@ import AppCard from "@crema/components/AppCard";
 import { Col, Button, Select, Input } from "antd";
 import { StyledTitle5 } from "../index.styled";
 import { useNavigate } from "react-router-dom";
-import ProductTable from "../ListingTable";
+import ProductTable from "../ListingTable/ListingTable";
 import axios from "@crema/services/axios";
 import moment from "moment";
 import companyLogo from "../../../../assets/images/apmLogo.png"; 
@@ -26,7 +26,7 @@ const ProductListing = () => {
 
   const [page, setPage] = useState(0);
   const [pageSize] = useState(10);
-  const [productList, setProductList] = useState<any[]>([]);
+  const [technicianList, setTechnicianList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const [filteredData, setFilteredData] = useState<any[]>([]);
@@ -53,18 +53,18 @@ const ProductListing = () => {
           };
         } else {
           console.error(
-            "Failed to fetch users: savedData or savedData.users is undefined"
+            "Failed to fetch technician: savedData or savedData.technician is undefined"
           );
         }
   
         const response = await axios.post(`${import.meta.env.VITE_API_URL as string}/api/users/find`, payload);
   
-        setProductList(response.data.users);
+        setTechnicianList(response.data.users);
         setFilteredData(response.data.users);
         setTotalCount(response.data.total); 
   
       } catch (error) {
-        console.error('Failed to fetch users:', error);
+        console.error('Failed to fetch technician:', error);
       } finally {
         setLoading(false);
       }
@@ -85,8 +85,6 @@ const ProductListing = () => {
       return true;
     }
   : () => true;
-
-  
 
     // const matchesStatus = filterData.status
     //   ? (item: any) => item.status === filterData.status
@@ -184,13 +182,11 @@ const ProductListing = () => {
       setFilteredData(response.users);
       setTotalCount(response.total);
     } catch (error) {
-      console.error("Failed to fetch users:", error);
+      console.error("Failed to fetch technician:", error);
     } finally {
       setLoading(false);
     }
   };
-  
-  
   
   const parseDateToTimestamp = (dateString:string) => {
     const momentDate = moment(dateString, 'DD/MM/YYYY', true); 
@@ -209,14 +205,14 @@ const ProductListing = () => {
       operator: "equals",
       filterValue: "",
     });
-    setFilteredData(productList);
-    setTotalCount(productList.length);
+    setFilteredData(technicianList);
+    setTotalCount(technicianList.length);
     setPage(0);
   };
 
   const onChangePage = (newPage: number) => {
     setPage(newPage);
-    applyFilters(productList);
+    applyFilters(technicianList);
   };
 
   const propertyMapping: Record<string, string> = {

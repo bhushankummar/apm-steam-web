@@ -4,13 +4,13 @@ import { RoutePermittedRole } from "@crema/constants/AppEnums";
 const Orders = React.lazy(() => import("../../../modules/ecommerce/Orders"));
 
 const ProductListing = React.lazy(
-  () => import("../../../modules/ecommerce/Admin/Listing")
+  () => import("../../../modules/ecommerce/Admin/Listing/Listing")
 );
 const AddProduct = React.lazy(
-  () => import("../../../modules/ecommerce/Admin/AddEditProduct")
+  () => import("../../../modules/ecommerce/Admin/AddEditProduct/AddTechnician")
 );
 const EditProduct = React.lazy(
-  () => import("../../../modules/ecommerce/Admin/EditProduct")
+  () => import("../../../modules/ecommerce/Admin/EditTechnician/EditTechnician")
 );
 
 const LogInformation = React.lazy(
@@ -21,7 +21,7 @@ const ErrorLogInformation = React.lazy(
   () => import("../../../modules/ecommerce/Admin/errorLogTable")
 );
 
-const DeleteProduct = React.lazy(() => import("../../../modules/ecommerce/Admin/DeleteProduct"));
+const DeleteProduct = React.lazy(() => import("../../../modules/ecommerce/Admin/DeleteTechnician/DeleteTechnician"));
 
 export const ecommerceConfig = [
   {

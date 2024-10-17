@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button, Dropdown, notification, Modal } from "antd";
+import { Button, Dropdown, notification } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { deleteUser } from "@crema/services/common/commonService";
 
