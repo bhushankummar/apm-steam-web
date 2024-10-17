@@ -12,17 +12,3 @@ export const Config = {
   export const loginRequest = {
     scopes: ['openid', 'profile', 'email', 'User.Read'],
   };
-
-
-  // export const config = {
-  //   issuer: 'https://login.microsoftonline.com/common',
-  //   clientId:
-  //     process.env.MICROSOFT_CLIENT_ID,
-  //   redirectUrl: 'com.apm.steam://auth',
-  //   scopes: ['openid', 'profile', 'email', 'User.Read'],
-  //   serviceConfiguration: {
-  //     authorizationEndpoint:
-  //       'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-  //     tokenEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
-  //   },
-  // };
