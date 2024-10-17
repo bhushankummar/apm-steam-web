@@ -45,7 +45,7 @@ const SignInAzure = () => {
         // Display an error notification
         notification.error({
           message: "Access Denied",
-          description: "You do not have access to the admin dashboard.",
+          description: "You are not authorized to access this application.",
         });
       }
     } catch (error) {

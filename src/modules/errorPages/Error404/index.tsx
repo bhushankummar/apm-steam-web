@@ -15,7 +15,13 @@ const Error404 = () => {
   const navigate = useNavigate();
 
   const onGoBackToHome = () => {
-    navigate(-1);
+    const idToken = sessionStorage.getItem("idToken");
+
+    if (idToken) {
+      navigate("/apps/admin/technician-listing");
+    } else {
+      navigate("/signin");
+    }
   };
 
   return (
