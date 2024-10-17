@@ -18,12 +18,12 @@ const { Option } = Select;
 const ProductListing = () => {
   const { messages } = useIntl();
   const navigate = useNavigate();
+  const disableGreaterLessThan = ['firstName', 'lastName', 'email', 'isActive'];
 
   const [filterData, setFilterData] = useState({
     isActive: null as "active" | "inactive" | null,
     property: null as string | null,
     filterValue: "",
-    operator: 'equals',
   });
 
   const [page, setPage] = useState(0);
@@ -225,7 +225,7 @@ const ProductListing = () => {
     setFilterData({
       isActive: null,
       property: null,
-      operator: "equals",
+      // operator: "equals",
       filterValue: "",
     });
     setFilteredData(productList);
@@ -279,9 +279,20 @@ const ProductListing = () => {
                   placeholder="Select Property"
                   style={{ flex: 1, marginRight: "10px" }}
                   value={filterData.property}
-                  onChange={(value) =>
-                    setFilterData({ ...filterData, property: value })
-                  }
+                  onChange={(value) =>{
+                    let newOperator = filterData.operator;
+                    if (['firstName', 'lastName', 'email', 'isActive'].includes(value)) {
+                      newOperator = 'equals';
+                    } else if (value === 'createdAt') {
+                      newOperator = 'greaterThan';
+                    }
+                    
+                    setFilterData({
+                      ...filterData,
+                      property: value,
+                      operator: newOperator
+                    });
+                  }}
                 >
                   {properties.map((property) => (
                     <Option key={property} value={property}>
@@ -297,12 +308,12 @@ const ProductListing = () => {
                     setFilterData({ ...filterData, operator: value })
                   }
                 >
-                  <Option value="equals">Equal</Option>
-                  <Option value="greaterThan">Greater Than</Option>
-                  <Option value="lessThan">Less Than</Option>
+                  <Option value="equals" disabled={filterData.property === "createdAt"}>Equal</Option>
+                  <Option value="greaterThan" disabled={filterData.property ? disableGreaterLessThan.includes(filterData.property) : false}>Greater Than</Option>
+                  <Option value="lessThan" disabled={filterData.property ? disableGreaterLessThan.includes(filterData.property) : false}>Less Than</Option>
                 </Select>
                 <Input
-                  placeholder="Value"
+                  placeholder={filterData.property === "createdAt" ? "DD/MM/YYYY" : "Value"}
                   style={{ flex: 1 }}
                   value={filterData.filterValue}
                   onChange={(e) =>
