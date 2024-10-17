@@ -12,21 +12,12 @@ import {useThemeContext} from '@crema/context/AppContextProvider/ThemeContextPro
 import './styles/index.css';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
+import { Config } from '../src/modules/auth/Signin/authConfig';
 
 function App() {
     const {theme} = useThemeContext();
 
-    const msalConfig = {
-        auth: {
-          clientId: "d94c13fd-e3c0-4b26-9d2f-7dcd4c8c0903",
-          authority:
-            "https://login.microsoftonline.com/21ad8092-c236-4396-a571-c20e2efef093",
-          redirectUri: "http://localhost:3001", // Your React app's URI
-        },
-      };
-      
-
-    const msalInstance = new PublicClientApplication(msalConfig); // Create MSAL instance
+    const msalInstance = new PublicClientApplication(Config);
 
 
   return (
