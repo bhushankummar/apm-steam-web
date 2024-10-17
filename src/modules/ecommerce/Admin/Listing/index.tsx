@@ -9,7 +9,9 @@ import ProductTable from "../ListingTable";
 import axios from "@crema/services/axios";
 import moment from "moment";
 import companyLogo from "../../../../assets/images/apmLogo.png"; 
-import { findUsers } from "@crema/services/common/commonService";
+import API_ENDPOINTS from "../../../../constant/apiEndpoints";
+import axiosService from "@crema/services/axios/axiosService";
+import { FindUsersResponse } from "../../../../constant/interfaces";
 
 const { Option } = Select;
 
@@ -86,11 +88,6 @@ const ProductListing = () => {
     }
   : () => true;
 
-  
-
-    // const matchesStatus = filterData.status
-    //   ? (item: any) => item.status === filterData.status
-    //   : () => true;
 
     const matchesProperty = (item: any) => {
       if (
@@ -146,14 +143,16 @@ const ProductListing = () => {
     setTotalCount(newFilteredData.length);
   };
 
+
   const handleApplyFilter = async () => {
     setLoading(true);
-    setPage(0); // Reset to the first page
+    setPage(0);
   
     try {
       let filter;
       let searchString;
   
+      // Define filter based on filterData
       if (filterData.property === "isActive") {
         filter = {
           columnName: "isActive",
@@ -178,17 +177,29 @@ const ProductListing = () => {
         };
       }
   
-      // Now call findUsers and pass the filter object
-      const response = await findUsers(searchString, 1, pageSize, filter);
-      
-      setFilteredData(response.users);
-      setTotalCount(response.total);
+      // Prepare the config for GET request
+      const payload = {
+    
+          searchString,
+          currentPage: 1,
+          pageSize,
+          filter, 
+        
+      };
+  
+      // Make the GET request using axiosService
+      const response = await axiosService.post<FindUsersResponse>(API_ENDPOINTS.USERS.FIND, payload);
+
+      // Update state with filtered data and total count
+      setFilteredData(response.data.users);  
+      setTotalCount(response.data.total);    
     } catch (error) {
       console.error("Failed to fetch users:", error);
     } finally {
       setLoading(false);
     }
   };
+  
   
   
   
