@@ -1,3 +1,4 @@
+import { Color } from "antd/es/color-picker";
 import { FaTools } from "react-icons/fa";
 
 const routesConfig = [
@@ -13,6 +14,12 @@ const routesConfig = [
         icon: <FaTools />,
         messageId: "sidebar.Admin.agent",
         url: "/apps/admin/technician-listing",
+      },
+      {
+        id: "logout",
+        title: "Logout",
+        messageId: "sidebar.Admin.logout",
+        url: "/apps/logout",
       },
       // {
       //         id: "Logs",

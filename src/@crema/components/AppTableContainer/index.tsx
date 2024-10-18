@@ -25,7 +25,7 @@ const AppTableContainer: React.FC<AppTableContainerProps> = ({
       columns={columns}
       dataSource={data}
       rowKey='id'
-      pagination={pagination}
+      // pagination={pagination}
       {...rest}
     />
   );

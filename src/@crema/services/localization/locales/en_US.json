@@ -495,6 +495,7 @@
   "sidebar.ecommerceAdmin.productListing": "Product Listing",
   "sidebar.ecommerceAdmin.agentListing": "APM Steam : Admin Panel",
   "sidebar.Admin.agent": "Technician",
+  "sidebar.Admin.logout": "Logout",
   "sidebar.Admin.addAgent": "New Technician",
   "sidebar.ecommerce.listView": "List View",
   "sidebar.ecommerce.gridView": "Grid View",

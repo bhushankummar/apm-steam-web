@@ -38,10 +38,6 @@ const UserInfo: React.FC<UserInfoProps> = ({hasColor}) => {
   };
 
   const items = [
-    {
-      key: 2,
-      label: <div onClick={() => logout()}>Logout</div>,
-    },
   ];
 
   return (
@@ -84,9 +80,6 @@ const UserInfo: React.FC<UserInfoProps> = ({hasColor}) => {
                   >
                     {user.displayName ? user.displayName : 'admin user '}
                   </StyledUsername>
-                  <StyledUserArrow className='cr-user-arrow'>
-                    <FaChevronDown />
-                  </StyledUserArrow>
                 </StyledUsernameInfo>
                 <StyledCrUserDesignation className='text-truncate'>
                   Administrator
@@ -127,9 +120,6 @@ const UserInfo: React.FC<UserInfoProps> = ({hasColor}) => {
                   >
                     {user.displayName ? user.displayName : 'admin user '}
                   </StyledUsername>
-                  <StyledUserArrow className='cr-user-arrow'>
-                    <FaChevronDown />
-                  </StyledUserArrow>
                 </StyledUsernameInfo>
                 <StyledCrUserDesignation className='text-truncate cr-user-designation'>
                 Administrator

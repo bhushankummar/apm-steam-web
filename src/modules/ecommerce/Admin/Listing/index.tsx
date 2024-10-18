@@ -18,10 +18,11 @@ const { Option } = Select;
 const ProductListing = () => {
   const { messages } = useIntl();
   const navigate = useNavigate();
-  const disableGreaterLessThan = ['firstName', 'lastName', 'email', 'isActive'];
+  const disableGreaterLessThan = ['firstName', 'lastName', 'email', 'isActive', 'isDeleted'];
 
   const [filterData, setFilterData] = useState({
     isActive: null as "active" | "inactive" | null,
+    isDeleted: null as "yes" | "no" | null,
     property: null as string | null,
     filterValue: "",
   });
@@ -84,6 +85,8 @@ const ProductListing = () => {
   ? (item: any) => {
       if (filterData.isActive === "active") return item.isActive = true;
       if (filterData.isActive === "inactive") return item.isActive = false;
+      if (filterData.isDeleted === "yes") return item.isDeleted = true;
+      if (filterData.isDeleted === "no") return item.isDeleted = false;
       return true;
     }
   : () => true;
@@ -225,6 +228,7 @@ const ProductListing = () => {
     setFilterData({
       isActive: null,
       property: null,
+      isDeleted: null,
       // operator: "equals",
       filterValue: "",
     });
@@ -244,6 +248,7 @@ const ProductListing = () => {
     email: "Email",
     createdAt: "Date Added",
     isActive: "Status",
+    isDeleted: "Deleted",
   };
 
   const properties = Object.keys(propertyMapping);
@@ -281,7 +286,7 @@ const ProductListing = () => {
                   value={filterData.property}
                   onChange={(value) =>{
                     let newOperator = filterData.operator;
-                    if (['firstName', 'lastName', 'email', 'isActive'].includes(value)) {
+                    if (['firstName', 'lastName', 'email', 'isActive', 'isDeleted'].includes(value)) {
                       newOperator = 'equals';
                     } else if (value === 'createdAt') {
                       newOperator = 'greaterThan';

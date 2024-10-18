@@ -3,6 +3,7 @@ import { RoutePermittedRole } from "@crema/constants/AppEnums";
 import { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Spin } from "antd";
+import LogoutComponent from "./LogoutComponent";
 
 const Orders = React.lazy(() => import("../../../modules/ecommerce/Orders"));
 
@@ -65,6 +66,11 @@ export const ecommerceConfig = [
     path: "/apps/admin/error/logs",
     element: <ErrorLogInformation />,
   },
+
+  {
+    path: "/apps/logout",
+    element: <LogoutComponent />, 
+  }
 ];
 
 const EcommerceRoutes = () => {
