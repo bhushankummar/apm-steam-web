@@ -12,7 +12,6 @@ import {
 } from "./index.styled";
 import companyLogo from "../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
 import { verifyUser } from "@crema/services/common/commonService";
-import { CheckCircleOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
 
 
@@ -23,7 +22,15 @@ const SignInAzure = () => {
   const { logInWithEmailAndPassword } = useAuthMethod(); // Firebase login method
   const { instance } = useMsal(); // MSAL instance for Azure login
 
-  // Handle Azure login
+  useEffect(()=>{
+    handleClearSession();
+  })
+
+  const handleClearSession = () => {
+    sessionStorage.clear();
+    console.log('Session storage cleared');
+  };
+
 // Handle Azure login
 const handleAzureLogin = async () => {
   try {
