@@ -64,9 +64,9 @@ const FirebaseAuthProvider: React.FC<FirebaseAuthProviderProps> = ({
   fetchError,
 }) => {
   const [firebaseData, setFirebaseData] = useState<FirebaseContextProps>({
-    user: { email: "test@example.com" } as AuthUserType, // Mock user data
+    user: undefined, // Mock user data
     isLoading: false,
-    isAuthenticated: true, // Mock authenticated state
+    isAuthenticated: false, // Mock authenticated state
   });
 
   // Simulate successful user state on mount

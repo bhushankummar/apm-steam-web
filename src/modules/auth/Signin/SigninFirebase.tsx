@@ -48,9 +48,16 @@ const handleAzureLogin = async () => {
 
       await logInWithEmailAndPassword({ email: response.account.username, password: "" }); // Firebase login with empty credentials
 
-      navigate("/apps/admin/technician-listing"); // Redirect on successful login
-    } else {
-      // Display an error notification
+        navigate("/apps/admin/technician-listing"); // Redirect on successful login
+      } else {
+        // Display an error notification
+        notification.error({
+          message: "Access Denied",
+          description: "You are not authorized to access this application.",
+        });
+      }
+    } catch (error) {
+      console.error("Azure login failed:", error);
       notification.error({
         message: "Access Denied",
         description: "You are not authorized to access this application.",
