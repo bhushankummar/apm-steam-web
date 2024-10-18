@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {  useNavigate, useParams } from "react-router-dom"; // Import useParams from react-router-dom
-import { Form, Input, Button, Radio, notification } from "antd";
+import { Form, Input, Button, Radio, notification, Spin } from "antd";
 import { findOne, updateUser } from "@crema/services/common/commonService"; // Assuming findOne is imported
 import { StyledUserCard, StyledUserCardHeader, StyledUserCardLogo, StyledUserContainer, StyledUserPages } from "../AddEditProduct/index.styled";
 import companyLogo from "../../../../assets/images/apmLogo.png"; // Replace with your actual path to the logo
@@ -72,7 +72,7 @@ const ProductEditPage = () => {
   };
 
   return loading || !currentProduct ? (
-    <div>Loading...</div> // Show a loading message while fetching product data
+    <Spin/>
   ) : (
     <StyledUserPages>
       <StyledUserContainer>

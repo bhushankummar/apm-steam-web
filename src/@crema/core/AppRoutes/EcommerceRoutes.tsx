@@ -1,5 +1,8 @@
 import React from "react";
 import { RoutePermittedRole } from "@crema/constants/AppEnums";
+import { Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
+import { Spin } from "antd";
 
 const Orders = React.lazy(() => import("../../../modules/ecommerce/Orders"));
 
@@ -63,3 +66,17 @@ export const ecommerceConfig = [
     element: <ErrorLogInformation />,
   },
 ];
+
+const EcommerceRoutes = () => {
+  return (
+    <Suspense fallback={<Spin size="large" style={{ display: 'block', margin: 'auto', marginTop: '20%' }} />}>
+      <Routes>
+        {ecommerceConfig.map(({ path, element }, index) => (
+          <Route key={index} path={path} element={element} />
+        ))}
+      </Routes>
+    </Suspense>
+  );
+};
+
+export default EcommerceRoutes;
