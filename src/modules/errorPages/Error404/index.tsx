@@ -10,20 +10,24 @@ import {
   StyledErrorImage,
   StyledErrorPara,
 } from "../index.styled";
+import { initialUrl } from "@crema/constants/AppConst";
 
 const Error404 = () => {
   const navigate = useNavigate();
 
   const onGoBackToHome = () => {
     const idToken = sessionStorage.getItem("idToken");
-
+    console.log("ID Token in session: ", idToken);
+  
     if (idToken) {
-      navigate("/apps/admin/technician-listing");
+      console.log("Navigating to initialUrl: ", initialUrl);
+      navigate(initialUrl);
     } else {
+      console.log("Navigating to /signin");
       navigate("/signin");
     }
   };
-
+  
   return (
     <>
       <AppPageMeta title="Not Found" />

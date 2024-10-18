@@ -26,7 +26,8 @@ const anonymousStructure = {
   routes: errorPagesConfigs.concat([
     {
       path: '/',
-      element: <Navigate to={initialUrl} />,
+      // If not logged in, send to /signin, otherwise to initialUrl
+      element: sessionStorage.getItem("idToken") ? <Navigate to={initialUrl} /> : <Navigate to='/signin' />,
     },
     {
       path: '*',
