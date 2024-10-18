@@ -9,10 +9,10 @@ const SITE_URL =
 
 const FACEBOOK_APP_ID = "XXXXXXXXX";
 
-const defaultTitle = "Crema-Ant Design admin Template";
+const defaultTitle = "APM Steam App";
 ``;
 const defaultDescription =
-  "Crema Ant is an Ant design based admin template. buid with CRA all ant library. ";
+  "PM Steam App is an intuitive and efficient tool designed to streamline the management of administrative tasks for APM Steam platforms.";
 const defaultImage =
   "https://firebasestorage.googleapis.com/v0/b/crema-demo.appspot.com/o/logo512.png?alt=media";
 const defaultTwitter = "@crema";
