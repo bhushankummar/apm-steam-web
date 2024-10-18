@@ -56,13 +56,6 @@ const handleAzureLogin = async () => {
           description: "You are not authorized to access this application.",
         });
       }
-    } catch (error) {
-      console.error("Azure login failed:", error);
-      notification.error({
-        message: "Access Denied",
-        description: "You are not authorized to access this application.",
-      });
-    }
   } catch (error) {
     console.error("Azure login failed:", error);
     notification.error({
